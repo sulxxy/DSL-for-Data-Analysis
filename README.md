@@ -6,6 +6,9 @@ The appeal of MapReduce has spawned a family of systems that implement or extend
 
 In this project, this problem is tackled by applying the ideas of Emma [1] that are summarized in a presentation [2] and a paper [3]. The idea is to use compiler framework LLVM and build a DSL in C++ instead of Scala. As a backend, this project will use the LLVM compiler [4].
 
+# Tool Chains
+* llvm (&clang) 7.0
+
 # Deliverables
 * A concept and implementation of a C++ based DSL implementation
 * An evaluation and benchmark using queries of the TPC-H benchmark [5]
