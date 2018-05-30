@@ -4,7 +4,7 @@ A Domain Specific Language for Data Analysis written in C++ with LLVM as back-en
 # Description
 The appeal of MapReduce has spawned a family of systems that implement or extend it. In order to enable parallel collection processing with User-Defined Functions (UDFs), these systems expose extensions of the MapReduce programming model as library-based dataflow APIs that are tightly coupled to their underlying runtime engine. Expressing data analysis algorithms with complex data and control flow structure using such APIs reveals a number of limitations that impede programmer’s productivity.
 
-In this project, you tackle this problem by applying the ideas of Emma [1] that are summarized in a presentation [2] and a paper [3]. The idea is to use compiler framework LLVM and build a DSL in C++ instead of Scala. As a backend, this project will use the LLVM compiler [4].
+In this project, this problem is tackled by applying the ideas of Emma [1] that are summarized in a presentation [2] and a paper [3]. The idea is to use compiler framework LLVM and build a DSL in C++ instead of Scala. As a backend, this project will use the LLVM compiler [4].
 
 # Deliverables
 * A concept and implementation of a C++ based DSL implementation
