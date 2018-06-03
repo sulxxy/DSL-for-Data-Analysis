@@ -14,6 +14,10 @@ In this project, this problem is tackled by applying the ideas of Emma [1] that 
 * A concept and implementation of a C++ based DSL implementation
 * An evaluation and benchmark using queries of the TPC-H benchmark [5]
 
+# supplementary Materials 
+* [Understanding Clang AST](https://jonasdevlieghere.com/understanding-the-clang-ast/)
+
+
 # References
 * [1] http://emma-language.org/
 * [2] [Emma Introduction Slides](https://docs.google.com/presentation/d/1IM6VhGGg--dx5dEnCJtWkD0JXCl9Sw-wzTgr3Cj6uig/edit#slide=id.g1e346bc9de_0_6)
