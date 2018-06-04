@@ -14,6 +14,11 @@ In this project, this problem is tackled by applying the ideas of Emma [1] that 
 * A concept and implementation of a C++ based DSL implementation
 * An evaluation and benchmark using queries of the TPC-H benchmark [5]
 
+# Presentations
+* [Initial Discussion](https://docs.google.com/presentation/d/1qKCc-usSp4yyKjJsFRIqfw5l5ffWULwigyTIkNzoBO8/edit?usp=sharing)
+* Middle Term Presentation: TBA
+* Final Presentation: TBA
+
 # supplementary Materials 
 * [Understanding Clang AST](https://jonasdevlieghere.com/understanding-the-clang-ast/)
 * [Match The Clang AST](https://clang.llvm.org/docs/LibASTMatchers.html)
