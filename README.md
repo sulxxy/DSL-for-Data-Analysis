@@ -1,5 +1,5 @@
-# DSL for Data Analysis
-A Domain Specific Language for Data Analysis written in C++ with LLVM as back-end 
+# DSL for Scalable Data Analysis
+A Domain Specific Language for scalable data analysis written in C++ with LLVM as back-end 
 
 # Description
 The appeal of MapReduce has spawned a family of systems that implement or extend it. In order to enable parallel collection processing with User-Defined Functions (UDFs), these systems expose extensions of the MapReduce programming model as library-based dataflow APIs that are tightly coupled to their underlying runtime engine. Expressing data analysis algorithms with complex data and control flow structure using such APIs reveals a number of limitations that impede programmer’s productivity.
