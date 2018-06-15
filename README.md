@@ -15,8 +15,7 @@ In this project, this problem is tackled by applying the ideas of Emma [1] that 
 * An evaluation and benchmark using queries of the TPC-H benchmark [5]
 
 # Presentations
-* [Initial Discussion](https://docs.google.com/presentation/d/1qKCc-usSp4yyKjJsFRIqfw5l5ffWULwigyTIkNzoBO8/edit?usp=sharing)
-* Middle Term Presentation: TBA
+* [Midterm Presentation](https://docs.google.com/presentation/d/1qKCc-usSp4yyKjJsFRIqfw5l5ffWULwigyTIkNzoBO8/edit?usp=sharing)
 * Final Presentation: TBA
 
 # Supplementary Materials 
