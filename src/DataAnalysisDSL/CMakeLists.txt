@@ -1,6 +1,7 @@
 add_clang_executable(find-class-decls
     DataAnalysisDSL.cpp
 	DataBag.cpp
+    DataSource.cpp
     Comprehensions.cpp
 	utils.cpp
 )
