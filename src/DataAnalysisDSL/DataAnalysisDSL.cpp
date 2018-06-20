@@ -12,52 +12,48 @@ public:
     explicit FindNamedClassVisitor(ASTContext *Context)
             : Context(Context) {}
 
-//    bool VisitCXXRecordDecl(CXXRecordDecl *Declaration) {
-//        llvm::outs() << "QulifiedName: "
-//                     << Declaration->getQualifiedNameAsString() << "\n";
-//        if (Declaration->getQualifiedNameAsString() == "n::m::C") {
-//            FullSourceLoc FullLocation = Context->getFullLoc(Declaration->getLocStart());
-//            if (FullLocation.isValid())
-//                llvm::outs() << "Found declaration at "
-//                             << FullLocation.getSpellingLineNumber() << ":"
-//                             << FullLocation.getSpellingColumnNumber() << "\n";
-//        }
-//        return true;
-//    }
-
-//    bool VisitStmt(Stmt* stmt){
-//        if(isa<DeclRefExpr>(stmt)){
-//            llvm::outs() << "got declref expr. Do nothing." << "\n";
-//        }
-//        return true;
-//    }
-
     bool VisitCXXForRangeStmt(CXXForRangeStmt *stmt){
         llvm::outs() << "got VisitCXXForRangeStmt. Do nothing." << "\n";
-//        stmt->getCond()->dump(llvm::outs());
 //        stmt->getLoopVariable()->dump();
         Expr *init_expr = stmt->getRangeInit();
         DeclRefExpr *ref_init_expr = cast<DeclRefExpr>(init_expr);
         llvm::outs() << ref_init_expr->getNameInfo().getAsString() << "\n";
 
         Stmt *body_stmt = stmt->getBody();
-
         for(StmtIterator bg = body_stmt->child_begin(), end = body_stmt->child_end(); bg != end; bg++){
             Stmt *cur_stmt = *bg;
             llvm::outs() << "stmt type: " << cur_stmt->getStmtClassName() << "\n";
             if(isa<BinaryOperator>(cur_stmt)){
                 BinaryOperator *binaryOperator = cast<BinaryOperator>(cur_stmt);
-                for(StmtIterator bg1 = binaryOperator->child_begin(), end1 = binaryOperator->child_end(); bg1 != end1; bg1++){
-                    llvm::outs() << "operator type: " << (*bg1)->getStmtClassName() << "\n";
-                    if(isa<MemberExpr>(*bg1)){
-                        MemberExpr *memberExpr = cast<MemberExpr>(*bg1);
-                        llvm::outs() << "member name: " << memberExpr->getMemberNameInfo().getAsString() << "\n";
-                        if(isa<DeclRefExpr>(memberExpr->getBase())){
-                            DeclRefExpr *declRefExpr = cast<DeclRefExpr>(memberExpr->getBase());
-                            llvm::outs() << "class name: " << declRefExpr->getNameInfo().getAsString()<< "\n";
-                        }
+                Expr *lhs = binaryOperator->getLHS();
+                Expr *rhs = binaryOperator->getRHS();
+                llvm::outs() << "LHS: " << lhs->getStmtClassName() << "\n";
+                llvm::outs() << "RHS: " << rhs->getStmtClassName() << "\n";
+                MemberExpr *memberExpr = cast<MemberExpr>(lhs);
+                llvm::outs() << "member name: " << memberExpr->getMemberNameInfo().getAsString() << "\n";
+                if(isa<DeclRefExpr>(memberExpr->getBase())){
+                    DeclRefExpr *declRefExpr = cast<DeclRefExpr>(memberExpr->getBase());
+                    llvm::outs() << "class name: " << declRefExpr->getNameInfo().getAsString()<< "\n";
+                }
+            }
+            else if(isa<IfStmt>(cur_stmt)){
+                IfStmt *ifStmt = cast<IfStmt>(cur_stmt);
+                if(ifStmt->getInit() != NULL){
+                    llvm::outs() << "Init: " << ifStmt->getInit()->getStmtClassName() << "\n";
+                }
+                if(ifStmt->getCond() != NULL) {
+                    llvm::outs() << "Cond: " << ifStmt->getCond()->getStmtClassName() << "\n";
+                }
+                if(ifStmt->getThen() != NULL) {
+                    llvm::outs() << "Then: " << ifStmt->getThen()->getStmtClassName() << "\n";
+                    CompoundStmt *compoundStmt = cast<CompoundStmt>(ifStmt->getThen());
+                    for(StmtIterator com_bg=compoundStmt->child_begin(), com_end = compoundStmt->child_end(); com_bg != com_end; com_bg++){
+                        Stmt *cur_compound_stmt = *com_bg;
+                        llvm::outs() << "Then SUB: " <<cur_compound_stmt->getStmtClassName() << "\n";
+                        BinaryOperator *binaryOperator = cast<BinaryOperator>(cur_compound_stmt);
+                        llvm::outs() << "LHS: " << binaryOperator->getLHS()->getStmtClassName() << "\n";
+                        llvm::outs() << "RHS: " << binaryOperator->getRHS()->getStmtClassName() << "\n";
                     }
-
                 }
             }
         }
