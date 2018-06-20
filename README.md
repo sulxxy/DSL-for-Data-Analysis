@@ -10,6 +10,16 @@ In this project, this problem is tackled by applying the ideas of Emma [1] that 
 * llvm (&clang) 7.0
 * Boost::Phoenix 3.2.0
 
+## How to run
+* Download latest llvm and clang source code ( see [here](https://clang.llvm.org/get_started.html))
+* `git clone $DSL-for_Data_Analysis`
+* `cp $DSL-for-Data-Analysis/src/DataAnalysisDSL $llvm/tools/clang/examples`
+* add DataAnalysisDSL directory to CMakeList.txt
+* `mkdir build (out of $llvm)`
+* `cd build && cmake -G "unix Makefiles" -DCLANG_BUILD_EXAMPLES=1 ../llvm`
+* `make`
+* `$build/bin/data_analysis_dsl input_code or ("$(cat path_to_input_file)")`
+
 # Deliverables
 * A concept and implementation of a C++ based DSL implementation
 * An evaluation and benchmark using queries of the TPC-H benchmark [5]
