@@ -7,6 +7,10 @@
 
 
 class DataSource {
+public:
+    void readData();
+    void getHeader();
+    void buildConnection();
 
 };
 

@@ -3,3 +3,7 @@
 //
 
 #include "DataSource.h"
+
+void DataSource::buildConnection() {}
+void DataSource::getHeader() {}
+void DataSource::readData() {}
