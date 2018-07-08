@@ -7,6 +7,7 @@
 
 #include <vector>
 #include "DataBag.h"
+#include "Variable.h"
 
 using namespace std;
 
@@ -18,9 +19,9 @@ public:
 private:
     vector<Variable> xs;
     int filters;
-    Variable head;
+    Variable *head;
     DataBag *bag;
-
+    DataBagOperator dataBagOperator;
 };
 
 

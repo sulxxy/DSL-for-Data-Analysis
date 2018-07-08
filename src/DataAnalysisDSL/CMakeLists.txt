@@ -6,6 +6,10 @@ add_clang_executable(find-class-decls
 	DataSource.cpp
 	Variable.h
     Variable.cpp
+    ListADT.h
+    ListADT.cpp
+    AbstractDataflow.h
+    AbstractDataflow.cpp
     Comprehensions.h
 	Comprehensions.cpp
 	JsonGenerator.h

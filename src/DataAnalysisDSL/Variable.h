@@ -15,7 +15,6 @@ typedef enum{
     FLOAT,
     STRING,
     CHAR,
-    LIST
 }BasicDataType;
 
 class Variable{
@@ -25,7 +24,9 @@ private:
 public:
     Variable();
     Variable(BasicDataType, string);
+    Variable(Variable *var);
     string getVarName();
+    BasicDataType getVarType();
 
 
 };

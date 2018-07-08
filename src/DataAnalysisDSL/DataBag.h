@@ -5,6 +5,17 @@
 #ifndef LLVM_DATABAG_H
 #define LLVM_DATABAG_H
 
+typedef enum{
+    CONSTRUCTOR,
+    MAP,
+    FLATTENMAP,
+    GROUPBY,
+    WITHFILTER,
+    MINUS,
+    PLUS,
+    FOLD,
+    EMPTY
+} DataBagOperator;
 
 class DataBag {
 private:
@@ -13,21 +24,15 @@ private:
 public:
     DataBag();
 
-    void map();
-
-    void flattenMap();
-
-    void groupBy();
-
-    void withFilter();
-
-    void minus();
-
-    void plus();
-
-    void fold();
-
-    void empty();
+    bool map();
+    bool flattenMap();
+    bool groupBy();
+    bool withFilter();
+    bool minus();
+    bool plus();
+    bool fold();
+    bool empty();
+    bool executeDataBagAPI(DataBagOperator);
 
 };
 
