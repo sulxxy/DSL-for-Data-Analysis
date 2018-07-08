@@ -5,12 +5,17 @@
 #ifndef LLVM_DATASOURCE_H
 #define LLVM_DATASOURCE_H
 
+#include "Variable.h"
 
 class DataSource {
+private:
+    vector<Variable> *descriptor;
 public:
-    void readData();
-    void getHeader();
-    void buildConnection();
+    DataSource();
+    DataSource(DataSource*);
+    vector<Variable> getDescription();
+    bool readData();
+    bool buildConnection();
 
 };
 

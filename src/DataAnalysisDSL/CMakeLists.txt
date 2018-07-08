@@ -4,6 +4,8 @@ add_clang_executable(find-class-decls
 	DataBag.cpp
     DataSource.h
 	DataSource.cpp
+	Variable.h
+    Variable.cpp
     Comprehensions.h
 	Comprehensions.cpp
 	JsonGenerator.h

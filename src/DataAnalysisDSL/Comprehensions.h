@@ -8,6 +8,7 @@
 #include <vector>
 #include "DataBag.h"
 
+using namespace std;
 
 class Comprehensions {
 public:
@@ -15,10 +16,10 @@ public:
     void feed(DataBag& databag);
 
 private:
-    std::vector<int> xs;
+    vector<Variable> xs;
     int filters;
-    int head;
-    DataBag bag;
+    Variable head;
+    DataBag *bag;
 
 };
 

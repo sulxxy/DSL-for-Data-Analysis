@@ -19,17 +19,21 @@ typedef pair<string, string> StrStrPair_t;
 class DSLASTVisitor : public RecursiveASTVisitor<DSLASTVisitor> {
 public:
     explicit DSLASTVisitor(ASTContext *Context);
+    explicit DSLASTVisitor(ASTContext *Context, DataSource *dataSource);
 
     bool VisitCXXForRangeStmt(CXXForRangeStmt *stmt);
     bool VisitIfStmt(IfStmt *stmt);
 
+    void setDataSource(DataSource *dataSource);
 
 //    bool VisitFunctionDecl(FunctionDecl *FD);
 
 private:
     ASTContext *Context;
+    /* element -> list */
     StrStrMap_t* elementListDict;
-    StrStrMap_t* dataTypeDict;
+    vector<Variable> *varList;
+    DataSource *dataSource;
 
     bool visitImplicitCastExpr(ImplicitCastExpr *expr, string *var);
     bool visitMemberExpr(MemberExpr *expr, string *className, string *memberName);

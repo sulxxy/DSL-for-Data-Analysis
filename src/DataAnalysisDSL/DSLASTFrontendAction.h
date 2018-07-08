@@ -10,10 +10,12 @@
 #include "DSLASTConsumer.h"
 
 class DSLASTFrontendAction : public clang::ASTFrontendAction {
+private:
+    DataSource *dataSource;
 public:
     DSLASTFrontendAction ();
 
-    DSLASTFrontendAction (int a);
+    DSLASTFrontendAction (DataSource* dataDescriptors);
 
     virtual std::unique_ptr<clang::ASTConsumer> CreateASTConsumer(
             clang::CompilerInstance &Compiler, llvm::StringRef InFile);

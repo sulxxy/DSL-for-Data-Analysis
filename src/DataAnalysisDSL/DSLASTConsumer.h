@@ -10,8 +10,10 @@
 #include "clang/AST/ASTConsumer.h"
 
 class DSLASTConsumer : public clang::ASTConsumer {
+private:
+    DataSource *dataSource;
 public:
-    explicit DSLASTConsumer(ASTContext *Context);
+    explicit DSLASTConsumer(ASTContext *Context, DataSource *dataSource);
 
     virtual void HandleTranslationUnit(clang::ASTContext &Context) ;
 
