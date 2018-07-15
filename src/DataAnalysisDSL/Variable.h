@@ -10,6 +10,7 @@
 using namespace std;
 
 typedef enum{
+    ERROR=-1,
     INTEGER,
     DOUBLE,
     FLOAT,

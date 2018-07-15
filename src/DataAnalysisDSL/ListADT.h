@@ -6,13 +6,16 @@
 #define LLVM_LISTADT_H
 
 
+#include <string>
+#include "Variable.h"
+
 class ListADT {
 private:
     Variable element;
     Variable list;
 
 public:
-    ListADT();
+    ListADT(Variable *ele, Variable *list);
 
     string getListName();
     string getElementName();

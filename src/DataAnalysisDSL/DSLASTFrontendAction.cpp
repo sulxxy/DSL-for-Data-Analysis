@@ -7,14 +7,16 @@
 #include "Variable.h"
 #include "DataSource.h"
 
+/*
 DSLASTFrontendAction::DSLASTFrontendAction ():clang::ASTFrontendAction(){}
 
 DSLASTFrontendAction::DSLASTFrontendAction(DataSource *dataSource):clang::ASTFrontendAction(){
     this->dataSource = dataSource;
 
 }
+ */
 
 std::unique_ptr<clang::ASTConsumer> DSLASTFrontendAction::CreateASTConsumer(
         clang::CompilerInstance &Compiler, llvm::StringRef InFile) {
-    return std::unique_ptr<clang::ASTConsumer>(new DSLASTConsumer(&Compiler.getASTContext(), dataSource));
+    return std::unique_ptr<clang::ASTConsumer>(new DSLASTConsumer(&Compiler.getASTContext()/*todo: back, dataSource*/));
 }

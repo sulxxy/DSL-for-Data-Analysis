@@ -2,6 +2,7 @@
 // Created by zhiwei on 6/18/18.
 //
 
+#include <llvm/Support/raw_ostream.h>
 #include "DataSource.h"
 
 DataSource::DataSource(){
@@ -9,7 +10,12 @@ DataSource::DataSource(){
 }
 
 DataSource::DataSource(DataSource *dataSource) {
-    *descriptor = dataSource->getDescription();
+    if(dataSource == NULL){
+        llvm::outs() << "empty pointer" << "\n";
+    }
+    else{
+        *descriptor = dataSource->getDescription();
+    }
 }
 
 bool DataSource::buildConnection() {

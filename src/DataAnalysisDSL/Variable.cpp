@@ -13,7 +13,7 @@ Variable::Variable(BasicDataType dt, string name) {
 }
 
 Variable::Variable(Variable *var) {
-    this(var->getVarType(), var->getVarName());
+    Variable(var->getVarType(), var->getVarName());
 }
 
 
@@ -30,7 +30,7 @@ string Variable::getVarName() {
 BasicDataType Variable::getVarType() {
     if(var == NULL){
         cout << "Empty pointer. Exit. \n";
-        return NULL;
+        return ERROR;
     }
     return var->first;
 }

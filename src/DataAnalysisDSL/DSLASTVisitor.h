@@ -9,6 +9,7 @@
 #include <string>
 
 #include "clang/AST/RecursiveASTVisitor.h"
+#include "DataSource.h"
 
 using namespace clang;
 using namespace std;
@@ -22,9 +23,12 @@ public:
     explicit DSLASTVisitor(ASTContext *Context, DataSource *dataSource);
 
     bool VisitCXXForRangeStmt(CXXForRangeStmt *stmt);
+    bool VisitForStmt(ForStmt *stmt);
     bool VisitIfStmt(IfStmt *stmt);
 
     void setDataSource(DataSource *dataSource);
+
+    bool isNested(SourceRange sr1, SourceRange sr2);
 
 //    bool VisitFunctionDecl(FunctionDecl *FD);
 

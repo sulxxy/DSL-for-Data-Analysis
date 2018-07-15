@@ -9,4 +9,5 @@ ListADT::ListADT(Variable *ele, Variable *list) {
         cout << "Empty pointer. Exit. " << "\n";
         exit(0);
     }
+    /*todo */
 }

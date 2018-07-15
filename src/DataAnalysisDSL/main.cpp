@@ -16,6 +16,7 @@ int main(int argc, char **argv) {
     }
     llvm::outs() << "file: " << argv[1] << "\n";
 
+    /*
     DataSource *dataSource = new DataSource;
     if(!dataSource->buildConnection()){
         llvm::outs() << "ERROR: Could not connect to DB." << "\n";
@@ -23,8 +24,9 @@ int main(int argc, char **argv) {
     }
 
     vector<Variable> descriptions = dataSource->getDescription();
-    DSLASTFrontendAction *DSLAction = new DSLASTFrontendAction(4, descriptions);
-    clang::tooling::runToolOnCode(DSLAction, argv[1]);
+    DSLASTFrontendAction *DSLAction = new DSLASTFrontendAction();
+     */
+    clang::tooling::runToolOnCode(new DSLASTFrontendAction, argv[1]);
 
     return 0;
 }

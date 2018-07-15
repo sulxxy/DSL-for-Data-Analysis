@@ -20,7 +20,13 @@ void DSLASTVisitor::setDataSource(DataSource *dataSource) {
     this->dataSource = new DataSource(dataSource);
 }
 
+bool DSLASTVisitor::VisitForStmt(ForStmt *stmt){
+    llvm::outs() << "got for" << "\n";
+    return true;
+}
+
 bool DSLASTVisitor::VisitCXXForRangeStmt(CXXForRangeStmt *stmt){
+    llvm::outs() << "got for range" << "\n";
     if(stmt == NULL){
         llvm::outs() << "empty pointer at line " << __LINE__ << ", exit." << "\n";
         exit(0);
@@ -30,11 +36,11 @@ bool DSLASTVisitor::VisitCXXForRangeStmt(CXXForRangeStmt *stmt){
     DeclRefExpr *ref_init_expr = cast<DeclRefExpr>(init_expr);
     string loopList = ref_init_expr->getNameInfo().getAsString();
     elementListDict->insert(StrStrPair_t(loopVar, loopList));
-
     return true;
 }
 
 bool DSLASTVisitor::VisitIfStmt(IfStmt *stmt) {
+    llvm::outs() << "got if" << "\n";
     if(stmt->getInit() != NULL){
         llvm::outs() << "Init: " << stmt->getInit()->getStmtClassName() << "\n";
     }
@@ -66,7 +72,7 @@ bool DSLASTVisitor::VisitIfStmt(IfStmt *stmt) {
     else{
         llvm::outs() << "Exception encountered while processing if-condition" << "\n";
     }
-//    llvm::outs() << stmt->getInit()->getStmtClassName() << "\n";
+
     return true;
 }
 
@@ -89,3 +95,12 @@ bool DSLASTVisitor::visitMemberExpr(MemberExpr *expr, string *className, string 
     return true;
 }
 
+bool DSLASTVisitor::isNested(SourceRange sr1, SourceRange sr2){
+    /* return true if sr2 is nested inside sr1 */
+    if(sr1.getBegin() < sr2.getBegin() && sr2.getEnd() < sr1.getEnd()){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
