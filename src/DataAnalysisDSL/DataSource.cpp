@@ -2,7 +2,6 @@
 // Created by zhiwei on 6/18/18.
 //
 
-#include <llvm/Support/raw_ostream.h>
 #include "DataSource.h"
 
 DataSource::DataSource(){
@@ -11,7 +10,8 @@ DataSource::DataSource(){
 
 DataSource::DataSource(DataSource *dataSource) {
     if(dataSource == NULL){
-        llvm::outs() << "empty pointer" << "\n";
+//        llvm::outs() << "error: " << __FILE__ << "\n";
+        ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
     }
     else{
         *descriptor = dataSource->getDescription();

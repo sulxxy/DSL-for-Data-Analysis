@@ -10,12 +10,12 @@
 
 #include "clang/AST/RecursiveASTVisitor.h"
 #include "DataSource.h"
+#include "ForListStmt.h"
+#include "Comprehensions.h"
+//#include "utils.h"
 
 using namespace clang;
 using namespace std;
-
-typedef map<string, string> StrStrMap_t;
-typedef pair<string, string> StrStrPair_t;
 
 class DSLASTVisitor : public RecursiveASTVisitor<DSLASTVisitor> {
 public:
@@ -25,19 +25,26 @@ public:
     bool VisitCXXForRangeStmt(CXXForRangeStmt *stmt);
     bool VisitForStmt(ForStmt *stmt);
     bool VisitIfStmt(IfStmt *stmt);
+    bool VisitCallExpr(CallExpr* callExpr);
 
     void setDataSource(DataSource *dataSource);
 
     bool isNested(SourceRange sr1, SourceRange sr2);
+    bool findParent(SourceRange sr, vector<ForListStmt*> *list);
+
+    vector<ForListStmt> *getElementListDict();
+    Filter *getFilter();
 
 //    bool VisitFunctionDecl(FunctionDecl *FD);
 
 private:
     ASTContext *Context;
-    /* element -> list */
-    StrStrMap_t* elementListDict;
+    /* mapping: element -> list */
+    vector<ForListStmt> *elementListDict;
+    Filter *filter;
     vector<Variable> *varList;
     DataSource *dataSource;
+    Comprehensions *comprehensions;
 
     bool visitImplicitCastExpr(ImplicitCastExpr *expr, string *var);
     bool visitMemberExpr(MemberExpr *expr, string *className, string *memberName);

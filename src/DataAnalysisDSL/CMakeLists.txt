@@ -6,8 +6,8 @@ add_clang_executable(find-class-decls
 	DataSource.cpp
 	Variable.h
     Variable.cpp
-    ListADT.h
-    ListADT.cpp
+	ForListStmt.h
+	ForListStmt.cpp
     AbstractDataflow.h
     AbstractDataflow.cpp
     Comprehensions.h
@@ -20,6 +20,11 @@ add_clang_executable(find-class-decls
 	DSLASTFrontendAction.cpp
 	DSLASTVisitor.h
 	DSLASTVisitor.cpp
+	Filter.h
+	Filter.cpp
+	Expression.h
+	Expression.cpp
+	utils.h
 	utils.cpp
 )
 

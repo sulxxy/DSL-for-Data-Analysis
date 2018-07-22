@@ -8,18 +8,20 @@
 #include <vector>
 #include "DataBag.h"
 #include "Variable.h"
+#include "Filter.h"
+#include "ForListStmt.h"
 
 using namespace std;
 
 class Comprehensions {
 public:
-    Comprehensions();
+    Comprehensions(vector<ForListStmt> *listVars, Filter* filter1);
     void feed(DataBag& databag);
 
 private:
-    vector<Variable> xs;
-    int filters;
-    Variable *head;
+    vector<ForListStmt> *vars;
+    Filter *filter; //todo: make it a function pointer
+    vector<Variable> *heads;
     DataBag *bag;
     DataBagOperator dataBagOperator;
 };

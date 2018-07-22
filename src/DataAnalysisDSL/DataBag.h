@@ -20,6 +20,7 @@ typedef enum{
 class DataBag {
 private:
     int data;
+    DataBagOperator dataBagOperator;
 
 public:
     DataBag();
@@ -32,8 +33,10 @@ public:
     bool plus();
     bool fold();
     bool empty();
+    bool collect();
     bool executeDataBagAPI(DataBagOperator);
 
+    bool setDataBagOperator(DataBagOperator);
 };
 
 

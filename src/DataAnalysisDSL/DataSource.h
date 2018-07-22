@@ -5,7 +5,10 @@
 #ifndef LLVM_DATASOURCE_H
 #define LLVM_DATASOURCE_H
 
+#include <llvm/Support/raw_ostream.h>
+
 #include "Variable.h"
+#include "utils.h"
 
 class DataSource {
 private:

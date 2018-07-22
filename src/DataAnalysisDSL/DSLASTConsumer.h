@@ -19,6 +19,7 @@ public:
 private:
     DSLASTVisitor Visitor;
     DataSource *dataSource;
+    Comprehensions *comprehensions;
 
 };
 

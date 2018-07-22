@@ -1,30 +1,22 @@
 //
-// Created by zhiwei on 6/18/18.
+// Created by zhiwei on 7/19/18.
 //
+#include "utils.h"
 
-#include <iostream>
-#include <llvm/Support/raw_ostream.h>
-#include "clang/AST/RecursiveASTVisitor.h"
+void ErrorMsg(const char* file, const char* func, int line, Error_e e){
 
-using namespace std;
-using namespace clang;
-
-typedef enum{
-    DEBUG,
-    INFO,
-    DATAFLOW
-} DebugLevel;
-
-void print(DebugLevel debugLevel, const Stmt *stmt, const string s){
-    switch (debugLevel){
-        case DEBUG:
-            stmt->dump();
-            llvm::outs() << s << "\n";
+    switch (e){
+        case NULLPOINTER:
+            llvm::outs() << "Empty pointer at file: " << file
+                         << ", function: " << func
+                         << ", line: " << line
+                         << "\n";
             break;
-        case INFO:
-            llvm::outs() << s << "\n";
-            break;
-        case DATAFLOW:
+        case UNKNOWN:
+            llvm::outs() << "Unknown error at file: " << file
+                         << ", function: " << func
+                         << ", line: " << line
+                         << "\n";
             break;
     }
 }
