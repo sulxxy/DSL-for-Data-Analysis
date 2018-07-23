@@ -15,11 +15,11 @@ using namespace std;
 
 class Comprehensions {
 public:
-    Comprehensions(vector<ForListStmt> *listVars, Filter* filter1);
+    Comprehensions(vector<ForListStmt*> *listVars, Filter* filter1);
     void feed(DataBag& databag);
 
 private:
-    vector<ForListStmt> *vars;
+    vector<ForListStmt*> *vars;
     Filter *filter; //todo: make it a function pointer
     vector<Variable> *heads;
     DataBag *bag;

@@ -14,13 +14,16 @@ using namespace std;
 
 typedef enum{
     OR,
-    AND
+    AND,
+    None
 } LogicOperator;
 
 
 class Filter {
 public:
+    Filter();
     Filter(vector<Expression> *conditions, vector<LogicOperator> *connectors);
+    bool append(Expression condition, LogicOperator connector);
 //    string toString();
 
 private:

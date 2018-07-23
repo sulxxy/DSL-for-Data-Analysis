@@ -5,6 +5,11 @@
 #include "Filter.h"
 #include "utils.h"
 
+Filter::Filter() {
+    connectors = new vector<LogicOperator>;
+    conditions = new vector<Expression>;
+}
+
 Filter::Filter(vector<Expression> *conditions, vector<LogicOperator> *connectors){
     if(conditions == NULL){
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
@@ -24,4 +29,10 @@ Filter::Filter(vector<Expression> *conditions, vector<LogicOperator> *connectors
     this->conditions = conditions;
     this->connectors = connectors;
 
+}
+
+bool Filter::append(Expression condition,LogicOperator connector){
+    this->conditions->push_back(condition);
+    this->connectors->push_back(connector);
+    return true;
 }

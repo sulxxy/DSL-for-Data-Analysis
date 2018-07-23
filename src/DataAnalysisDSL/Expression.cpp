@@ -5,7 +5,11 @@
 #include "Expression.h"
 #include "utils.h"
 
-Expression::Expression(Variable *left, Variable *right, Comparator comparator){
+Expression::Expression() {
+
+}
+
+Expression::Expression(Variable *left, Variable *right, BO_Opcode comparator){
     if(left == NULL){
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
         exit(0);
@@ -27,7 +31,30 @@ Variable* Expression::getRightVar(){
     return this->rightVar;
 
 }
-Comparator Expression::getComparator(){
+BO_Opcode Expression::getComparator(){
     return this->comparator;
+}
+
+bool Expression::setLeftVar(Variable *var){
+    if(var == NULL){
+        ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
+        exit(0);
+    }
+    this->leftVar = var;
+    return true;
+}
+
+bool Expression::setRightVar(Variable *var){
+    if(var == NULL){
+        ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
+        exit(0);
+    }
+    this->rightVar = var;
+    return true;
+}
+
+bool Expression::setComparator(BO_Opcode comparator1){
+    this->comparator = comparator1;
+    return true;
 
 }

@@ -4,11 +4,12 @@
 
 #include <string>
 #include "ForListStmt.h"
+#include "utils.h"
 
 
 ForListStmt::ForListStmt(Variable *ele, Variable *list, SourceRange sourceRange1) {
     if(ele == NULL || list == NULL){
-        cout << "Empty pointer. Exit. " << "\n";
+        ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
         exit(0);
     }
     this->element = *ele;
@@ -16,17 +17,22 @@ ForListStmt::ForListStmt(Variable *ele, Variable *list, SourceRange sourceRange1
     this->sourceRange = sourceRange1;
 }
 
-SourceRange ForListStmt::getSourceRange() {return sourceRange;}
+SourceRange ForListStmt::getSourceRange() {
+    return sourceRange;
+}
 
-string ForListStmt::getElementName() {return element.getVarName();}
+string ForListStmt::getElementName() {
+    return element.getVarName();
+}
 
 Variable ForListStmt::getListVar(){
     return list;
-
 }
+
 Variable ForListStmt::getElementVar(){
     return element;
-
 }
 
-string ForListStmt::getListName() {return list.getVarName();}
+string ForListStmt::getListName() {
+    return list.getVarName();
+}

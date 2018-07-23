@@ -17,7 +17,6 @@ DSLASTConsumer::DSLASTConsumer(ASTContext *Context, DataSource *datasource)
 void DSLASTConsumer::HandleTranslationUnit(clang::ASTContext &Context) {
     Visitor.setDataSource(dataSource);
     Visitor.TraverseDecl(Context.getTranslationUnitDecl());
+    llvm::outs() << "building comprehensions" << "\n";
     comprehensions = new Comprehensions(Visitor.getElementListDict(), Visitor.getFilter());
 }
-
-

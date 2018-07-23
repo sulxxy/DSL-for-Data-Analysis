@@ -32,7 +32,7 @@ public:
     bool isNested(SourceRange sr1, SourceRange sr2);
     bool findParent(SourceRange sr, vector<ForListStmt*> *list);
 
-    vector<ForListStmt> *getElementListDict();
+    vector<ForListStmt*> *getElementListDict();
     Filter *getFilter();
 
 //    bool VisitFunctionDecl(FunctionDecl *FD);
@@ -40,7 +40,7 @@ public:
 private:
     ASTContext *Context;
     /* mapping: element -> list */
-    vector<ForListStmt> *elementListDict;
+    vector<ForListStmt*> *elementListDict;
     Filter *filter;
     vector<Variable> *varList;
     DataSource *dataSource;

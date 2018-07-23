@@ -77,7 +77,7 @@ bool DataBag::setDataBagOperator(DataBagOperator dataBagOperator1){
     return true;
 }
 
-bool DataBag::collect() {
+bool DataBag::collect(int x) {
     /* TODO */
     return true;
 }

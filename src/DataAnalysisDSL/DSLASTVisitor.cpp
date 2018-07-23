@@ -5,16 +5,18 @@
 #include "DSLASTVisitor.h"
 #include "DataSource.h"
 #include "ForListStmt.h"
+#include "clang/AST/OperationKinds.h"
 
 DSLASTVisitor::DSLASTVisitor(ASTContext *Context) : Context(Context) {
     elementListDict = new vector<ForListStmt *>;
     varList = new vector<Variable>;
-    comprehensions = new Comprehensions;
+    filter = new Filter;
 }
 
 DSLASTVisitor::DSLASTVisitor(ASTContext *Context, DataSource *dataSource) : Context(Context) {
     elementListDict = new vector<ForListStmt *>;
     varList = new vector<Variable>;
+    filter = new Filter;
     this->dataSource = new DataSource(dataSource);
 }
 
@@ -46,6 +48,7 @@ bool DSLASTVisitor::VisitCXXForRangeStmt(CXXForRangeStmt *stmt) {
 
 bool DSLASTVisitor::VisitIfStmt(IfStmt *stmt) {
     llvm::outs() << "got if" << "\n";
+    Expression *expression = new Expression;
     if (stmt == NULL) {
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
         exit(0);
@@ -56,6 +59,10 @@ bool DSLASTVisitor::VisitIfStmt(IfStmt *stmt) {
         llvm::outs() << "Cond: " << stmt->getCond()->getStmtClassName() << "\n";
         if (isa<BinaryOperator>(stmt->getCond())) {
             BinaryOperator *cond = cast<BinaryOperator>(stmt->getCond());
+            switch(cond->getOpcode()){
+                case BO_Xor:
+                    break;
+            }
             Expr *lhs = cond->getLHS();
             if (isa<MemberExpr>(lhs)) {
                 MemberExpr *memberExpr = cast<MemberExpr>(lhs);
@@ -76,7 +83,6 @@ bool DSLASTVisitor::VisitIfStmt(IfStmt *stmt) {
     } else {
         llvm::outs() << "Exception encountered while processing if-condition" << "\n";
     }
-
     return true;
 }
 
@@ -135,10 +141,11 @@ bool DSLASTVisitor::isNested(SourceRange sr1, SourceRange sr2) {
 }
 
 bool DSLASTVisitor::findParent(SourceRange sr, vector<ForListStmt*> *list){
+    //todo
     return true;
 }
 
-vector<ForListStmt> *DSLASTVisitor::getElementListDict(){
+vector<ForListStmt*> *DSLASTVisitor::getElementListDict(){
     return this->elementListDict;
 }
 

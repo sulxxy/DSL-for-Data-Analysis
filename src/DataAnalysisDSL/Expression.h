@@ -6,28 +6,29 @@
 #define LLVM_EXPRESSION_T_H
 
 #include "Variable.h"
+#include "clang/AST/RecursiveASTVisitor.h"
 
-typedef enum{
-    EQ,
-    NEQ,
-    LEQ,
-    GEQ,
-    GT,
-    LT
-}Comparator;
+using namespace clang;
+
+typedef BinaryOperator::Opcode BO_Opcode;
 
 class Expression {
 public:
-    Expression(Variable *left, Variable *right, Comparator comparator);
+    Expression();
+    Expression(Variable *left, Variable *right, BO_Opcode comparator);
 
     Variable* getLeftVar();
     Variable* getRightVar();
-    Comparator getComparator();
+    BO_Opcode getComparator();
+
+    bool setLeftVar(Variable *var);
+    bool setRightVar(Variable *var);
+    bool setComparator(BO_Opcode comparator1);
 
 private:
     Variable *leftVar;
     Variable *rightVar;
-    Comparator comparator;
+    BO_Opcode comparator;
 };
 
 

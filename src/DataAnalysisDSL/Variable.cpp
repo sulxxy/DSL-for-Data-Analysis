@@ -16,7 +16,6 @@ Variable::Variable(Variable *var) {
     Variable(var->getVarType(), var->getVarName());
 }
 
-
 string Variable::getVarName() {
     if(var == NULL){
         cout << "Empty pointer. Exit. \n";

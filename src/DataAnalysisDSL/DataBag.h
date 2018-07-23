@@ -33,7 +33,7 @@ public:
     bool plus();
     bool fold();
     bool empty();
-    bool collect();
+    bool collect(int );
     bool executeDataBagAPI(DataBagOperator);
 
     bool setDataBagOperator(DataBagOperator);

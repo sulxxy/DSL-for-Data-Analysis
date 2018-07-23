@@ -5,7 +5,7 @@
 #include "Comprehensions.h"
 #include "utils.h"
 
-Comprehensions::Comprehensions(vector<ForListStmt> *listVars, Filter* filter1){
+Comprehensions::Comprehensions(vector<ForListStmt*> *listVars, Filter* filter1){
     if(listVars == NULL){
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
         exit(0);
@@ -26,6 +26,6 @@ Comprehensions::Comprehensions(vector<ForListStmt> *listVars, Filter* filter1){
     this->heads = new vector<Variable>;
 
     for(int i = 0; i < listVars->size(); i++){
-        heads->push_back(listVars->at(i).getElementVar());
+        heads->push_back(listVars->at(i)->getElementVar());
     }
 }
