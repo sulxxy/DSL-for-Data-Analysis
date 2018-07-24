@@ -58,3 +58,24 @@ bool Expression::setComparator(BO_Opcode comparator1){
     return true;
 
 }
+
+string Expression::opcodeStr(){
+    switch(this->comparator){
+        case BO_LE:
+            return "<=";
+        case BO_LT:
+            return "<";
+        case BO_GT:
+            return ">";
+        case BO_GE:
+            return ">=";
+        case BO_EQ:
+            return "==";
+        default:
+            return "UK";
+    }
+}
+
+string Expression::toString(){
+    return this->leftVar->getVarName() + " " + opcodeStr() + " " + this->rightVar->getVarName();
+}

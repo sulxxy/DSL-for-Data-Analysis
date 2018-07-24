@@ -34,6 +34,7 @@ public:
 
     vector<ForListStmt*> *getElementListDict();
     Filter *getFilter();
+    DataBag *getDataBag();
 
 //    bool VisitFunctionDecl(FunctionDecl *FD);
 
@@ -44,7 +45,7 @@ private:
     Filter *filter;
     vector<Variable> *varList;
     DataSource *dataSource;
-    Comprehensions *comprehensions;
+    DataBag *databag;
 
     bool visitImplicitCastExpr(ImplicitCastExpr *expr, string *var);
     bool visitMemberExpr(MemberExpr *expr, string *className, string *memberName);

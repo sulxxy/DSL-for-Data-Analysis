@@ -15,7 +15,7 @@ using namespace std;
 typedef enum{
     OR,
     AND,
-    None
+    NONE
 } LogicOperator;
 
 
@@ -24,7 +24,7 @@ public:
     Filter();
     Filter(vector<Expression> *conditions, vector<LogicOperator> *connectors);
     bool append(Expression condition, LogicOperator connector);
-//    string toString();
+    string toString();
 
 private:
     vector<Expression> *conditions;

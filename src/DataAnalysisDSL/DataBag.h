@@ -5,6 +5,11 @@
 #ifndef LLVM_DATABAG_H
 #define LLVM_DATABAG_H
 
+
+#include <string>
+
+using namespace std;
+
 typedef enum{
     CONSTRUCTOR,
     MAP,
@@ -14,16 +19,20 @@ typedef enum{
     MINUS,
     PLUS,
     FOLD,
-    EMPTY
+    EMPTY,
+    SORTBY,
+    UNKNOWNARG
 } DataBagOperator;
 
 class DataBag {
 private:
     int data;
     DataBagOperator dataBagOperator;
+    string arg;
 
 public:
     DataBag();
+    DataBag(DataBagOperator dataBagOperator1, string arg0);
 
     bool map();
     bool flattenMap();
@@ -37,6 +46,8 @@ public:
     bool executeDataBagAPI(DataBagOperator);
 
     bool setDataBagOperator(DataBagOperator);
+
+    string toString();
 };
 
 

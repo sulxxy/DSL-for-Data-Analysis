@@ -25,6 +25,10 @@ public:
     bool setRightVar(Variable *var);
     bool setComparator(BO_Opcode comparator1);
 
+    string opcodeStr();
+
+    string toString();
+
 private:
     Variable *leftVar;
     Variable *rightVar;

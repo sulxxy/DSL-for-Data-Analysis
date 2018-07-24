@@ -36,3 +36,8 @@ bool Filter::append(Expression condition,LogicOperator connector){
     this->connectors->push_back(connector);
     return true;
 }
+
+string Filter::toString() {
+    //todo:
+    return this->conditions->at(0).toString();
+}

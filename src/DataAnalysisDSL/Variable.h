@@ -16,6 +16,7 @@ typedef enum{
     FLOAT,
     STRING,
     CHAR,
+    CONSTANT
 }BasicDataType;
 
 class Variable{

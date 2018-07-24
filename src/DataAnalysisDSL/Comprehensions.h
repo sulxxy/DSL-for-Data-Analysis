@@ -15,8 +15,10 @@ using namespace std;
 
 class Comprehensions {
 public:
-    Comprehensions(vector<ForListStmt*> *listVars, Filter* filter1);
+    Comprehensions(vector<ForListStmt*> *listVars, Filter* filter1, DataBag *bag1);
     void feed(DataBag& databag);
+    string toString();
+    bool setDataBag(DataBag *dataBag);
 
 private:
     vector<ForListStmt*> *vars;

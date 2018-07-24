@@ -6,6 +6,7 @@
 #include "DataSource.h"
 #include "ForListStmt.h"
 #include "clang/AST/OperationKinds.h"
+#include "Filter.h"
 
 DSLASTVisitor::DSLASTVisitor(ASTContext *Context) : Context(Context) {
     elementListDict = new vector<ForListStmt *>;
@@ -25,7 +26,7 @@ void DSLASTVisitor::setDataSource(DataSource *dataSource) {
 }
 
 bool DSLASTVisitor::VisitForStmt(ForStmt *stmt) {
-    llvm::outs() << "got for" << "\n";
+//    llvm::outs() << "got for" << "\n";
     if (stmt == NULL) {
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
         exit(0);
@@ -47,7 +48,7 @@ bool DSLASTVisitor::VisitCXXForRangeStmt(CXXForRangeStmt *stmt) {
 }
 
 bool DSLASTVisitor::VisitIfStmt(IfStmt *stmt) {
-    llvm::outs() << "got if" << "\n";
+//    llvm::outs() << "got if" << "\n";
     Expression *expression = new Expression;
     if (stmt == NULL) {
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
@@ -59,10 +60,7 @@ bool DSLASTVisitor::VisitIfStmt(IfStmt *stmt) {
         llvm::outs() << "Cond: " << stmt->getCond()->getStmtClassName() << "\n";
         if (isa<BinaryOperator>(stmt->getCond())) {
             BinaryOperator *cond = cast<BinaryOperator>(stmt->getCond());
-            switch(cond->getOpcode()){
-                case BO_Xor:
-                    break;
-            }
+            expression->setComparator(cond->getOpcode());
             Expr *lhs = cond->getLHS();
             if (isa<MemberExpr>(lhs)) {
                 MemberExpr *memberExpr = cast<MemberExpr>(lhs);
@@ -72,10 +70,19 @@ bool DSLASTVisitor::VisitIfStmt(IfStmt *stmt) {
                 ImplicitCastExpr *implicitCastExpr = cast<ImplicitCastExpr>(lhs);
                 string var;
                 visitImplicitCastExpr(implicitCastExpr, &var);
-                llvm::outs() << var << "\n";
+//                llvm::outs() << var << "\n";
+                expression->setLeftVar(new Variable(INTEGER, var));
             } else {
                 llvm::outs() << "Unexpected Expr: " << lhs->getStmtClassName() << "\n";
             }
+            Expr *rhs = cond->getRHS();
+            if(isa<IntegerLiteral>(rhs)){
+                IntegerLiteral *integerLiteral = cast<IntegerLiteral>(rhs);
+                string r_val = to_string((int)integerLiteral->getValue().roundToDouble());
+//                llvm::outs() << r_val << "\n";
+                expression->setRightVar(new Variable(CONSTANT, r_val));
+            }
+//            rhs->dump();
         } else {
             llvm::outs() << "Unexpected IF-COND Expr: " << stmt->getCond()->getStmtClassName() << "\n";
             exit(0);
@@ -83,6 +90,7 @@ bool DSLASTVisitor::VisitIfStmt(IfStmt *stmt) {
     } else {
         llvm::outs() << "Exception encountered while processing if-condition" << "\n";
     }
+    filter->append(*expression, NONE);
     return true;
 }
 
@@ -91,16 +99,27 @@ bool DSLASTVisitor::VisitCallExpr(CallExpr* callExpr){
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
         exit(0);
     }
-    callExpr->dump();
+//    callExpr->dump();
 
-    Expr *expr = callExpr->getCallee();
+    string funcName = callExpr->getDirectCallee()->getNameInfo().getAsString();
+//    llvm::outs() << "funcName: " << funcName << "\n";
 
-//    llvm::outs() << callExpr->getDirectCallee()->getNameInfo().getAsString() << "\n";
+//    callExpr->getArg(0)->dump();
+    ImplicitCastExpr *tmp = cast<ImplicitCastExpr>(*(callExpr->getArg(0)->child_begin()));
+    StringRef arg0 = cast<StringLiteral>(*(tmp->child_begin()))->getString();
+//    tmp->dump();
+//    string arg0 = "AGE";
 
-    if(isa<UserDefinedLiteral>(callExpr)){
-        UserDefinedLiteral* userDefinedLiteral = cast<UserDefinedLiteral>(callExpr);
-        llvm::outs() << "get literal" << "\n";
+    if(funcName == "groupBy"){
+        this->databag = new DataBag(GROUPBY, arg0);
     }
+    else if(funcName == "sortBy"){
+        this->databag = new DataBag(SORTBY, arg0);
+    }
+    else{
+        this->databag = new DataBag(UNKNOWNARG, arg0);
+    }
+
     return true;
 }
 
@@ -151,4 +170,7 @@ vector<ForListStmt*> *DSLASTVisitor::getElementListDict(){
 
 Filter *DSLASTVisitor::getFilter(){
     return this->filter;
+}
+DataBag* DSLASTVisitor::getDataBag(){
+    return this->databag;
 }

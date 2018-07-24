@@ -8,6 +8,11 @@ DataBag::DataBag() {
     dataBagOperator = CONSTRUCTOR;
 }
 
+DataBag::DataBag(DataBagOperator dataBagOperator1, string arg0){
+    dataBagOperator = dataBagOperator1;
+    arg = arg0;
+}
+
 bool DataBag::map() {
 
     return true;
@@ -80,4 +85,14 @@ bool DataBag::setDataBagOperator(DataBagOperator dataBagOperator1){
 bool DataBag::collect(int x) {
     /* TODO */
     return true;
+}
+
+string DataBag::toString(){
+    /* TODO */
+    switch(dataBagOperator){
+        case GROUPBY:
+            return "\ngroupBy " + arg + "\n";
+        case SORTBY:
+            return "\norderBy " + arg + "\n";
+    }
 }
