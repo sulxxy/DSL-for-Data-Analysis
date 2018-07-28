@@ -9,13 +9,15 @@ In this project, this problem is tackled by applying the ideas of Emma [1] that 
 # Tool Chains
 * llvm (&clang) 7.0
 * Boost::Phoenix 3.2.0
+* [RapidJSON](http://rapidjson.org/)
 
 ## How to run
 * Download latest llvm and clang source code ( see [here](https://clang.llvm.org/get_started.html))
-* `git clone $DSL-for_Data_Analysis`
-* `cp $DSL-for-Data-Analysis/src/DataAnalysisDSL $llvm/tools/clang/examples`
+* `git clone $DSL_for_Data_Analysis`
+* `cp $DSL-for-Data-Analysis/src/DataAnalysisDSL $LLVM/tools/clang/examples`
 * add DataAnalysisDSL directory to CMakeList.txt
-* `mkdir build (out of $llvm)`
+* `cp $RAPIDJSON/include/rapidjson $LLVM/include`
+* `mkdir build (out of $LLVM)`
 * `cd build && cmake -G "unix Makefiles" -DCLANG_BUILD_EXAMPLES=1 ../llvm`
 * `make`
 * `$build/bin/data_analysis_dsl input_code or ("$(cat path_to_input_file)")`
