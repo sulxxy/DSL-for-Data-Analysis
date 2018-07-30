@@ -5,18 +5,18 @@
 #include "Comprehensions.h"
 #include "utils.h"
 
-Comprehensions::Comprehensions(vector<ForListStmt*> *listVars, Filter* filter1, DataBag *bag1){
-    if(listVars == NULL){
+Comprehensions::Comprehensions(vector<ForListStmt *> *listVars, Filter *filter1, DataBag *bag1) {
+    if (listVars == NULL) {
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
         exit(0);
     }
 
-    if(filter1 == NULL){
+    if (filter1 == NULL) {
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
         exit(0);
     }
 
-    if(bag1 == NULL){
+    if (bag1 == NULL) {
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
         exit(0);
     }
@@ -26,13 +26,13 @@ Comprehensions::Comprehensions(vector<ForListStmt*> *listVars, Filter* filter1, 
     this->bag = bag1;
     this->heads = new vector<Variable>;
 
-    for(int i = 0; i < listVars->size(); i++){
+    for (int i = 0; i < listVars->size(); i++) {
         heads->push_back(listVars->at(i)->getElementVar());
     }
 }
 
-bool Comprehensions::setDataBag(DataBag *dataBag){
-    if(dataBag == NULL){
+bool Comprehensions::setDataBag(DataBag *dataBag) {
+    if (dataBag == NULL) {
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
         exit(0);
     }
@@ -40,14 +40,22 @@ bool Comprehensions::setDataBag(DataBag *dataBag){
     return true;
 }
 
-string Comprehensions::toString(){
-   string select = "SELECT ";
-   string from = " FROM ";
-   string where = " WHERE ";
-   string ret = select + this->vars->at(0)->getElementName() + from + this->vars->at(0)->getListName() + "\n" + where + this->filter->toString();
-   if(bag != NULL){
-       ret = ret + bag->toString();
-   }
-   return ret;
+string Comprehensions::toString() {
+    string queryPlan = "{QUERY_PLAN: ";
+    string operatorName = "OPERATOR_NAME: ";
+    string leftChild = "LEFT_CHILD: ";
+    string rightChild = "RIGHT_CHILD: ";
+
+    string select = "SELECT ";
+    string from = " FROM ";
+    string where = " WHERE ";
+
+    // todo:
+    string ret = select + this->vars->at(0)->getElementName() + from
+            + this->vars->at(0)->getListName() + "\n" + where + this->filter->toString();
+    if (bag != NULL) {
+        ret = ret + bag->toString();
+    }
+    return ret;
 
 }

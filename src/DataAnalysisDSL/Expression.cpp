@@ -72,10 +72,43 @@ string Expression::opcodeStr(){
         case BO_EQ:
             return "==";
         default:
-            return "UK";
+            return "BO_UNK";
     }
 }
 
 string Expression::toString(){
     return this->leftVar->getVarName() + " " + opcodeStr() + " " + this->rightVar->getVarName();
+}
+
+string Expression::getOpcodeAsString(){
+    switch(this->comparator){
+        case BO_LE:
+            return "LESS_EQUAL";
+        case BO_LT:
+            return "LESS_THAN";
+        case BO_GT:
+            return "GREATER_THAN";
+        case BO_GE:
+            return "GREATER_EQUAL";
+        case BO_EQ:
+            return "EQUAL";
+        default:
+            return "BO_UNK";
+    }
+}
+
+string Expression::getLeftVarNameAsString(){
+    return getLeftVar()->getVarName();
+}
+
+string Expression::getLeftVarTypeAsString(){
+    return getLeftVar()->getVarTypeAsString();
+}
+
+string Expression::getRightVarNameAsString(){
+    return getRightVar()->getVarName();
+}
+
+string Expression::getRightVarTypeAsString(){
+    return getRightVar()->getVarTypeAsString();
 }

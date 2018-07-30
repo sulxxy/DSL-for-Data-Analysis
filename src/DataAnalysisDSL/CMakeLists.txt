@@ -1,4 +1,4 @@
-add_clang_executable(find-class-decls
+add_clang_executable(DSL-analysis
 	main.cpp
 	DataBag.h
 	DataBag.cpp
@@ -28,7 +28,7 @@ add_clang_executable(find-class-decls
 	utils.cpp
 )
 
-target_link_libraries(find-class-decls 
+target_link_libraries(DSL-analysis
 	PRIVATE
 	clangTooling
 )

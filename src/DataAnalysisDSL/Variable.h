@@ -29,6 +29,7 @@ public:
     Variable(Variable *var);
     string getVarName();
     BasicDataType getVarType();
+    string getVarTypeAsString();
 
 
 };

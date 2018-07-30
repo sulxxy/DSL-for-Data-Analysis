@@ -3,6 +3,7 @@
 //
 
 #include "Variable.h"
+#include "utils.h"
 
 Variable::Variable() {
     var = new pair<BasicDataType, string>();
@@ -28,10 +29,33 @@ string Variable::getVarName() {
 
 BasicDataType Variable::getVarType() {
     if(var == NULL){
-        cout << "Empty pointer. Exit. \n";
+        ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
         return ERROR;
     }
     return var->first;
 }
 
+
+string Variable::getVarTypeAsString() {
+    if(var == NULL){
+        ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
+        return "ERROR";
+    }
+    switch (var->first){
+        case INTEGER:
+            return "INT";
+        case DOUBLE:
+            return "DOUBLE";
+        case FLOAT:
+            return "FLOAT";
+        case STRING:
+            return "VCHAR";
+        case CHAR:
+            return "CHAR";
+        case CONSTANT:
+            return "CONSTANT";
+        default:
+            return "UNK";
+    }
+}
 

@@ -26,6 +26,11 @@ public:
     bool setComparator(BO_Opcode comparator1);
 
     string opcodeStr();
+    string getOpcodeAsString();
+    string getLeftVarNameAsString();
+    string getLeftVarTypeAsString();
+    string getRightVarNameAsString();
+    string getRightVarTypeAsString();
 
     string toString();
 
