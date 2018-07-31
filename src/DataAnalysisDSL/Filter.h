@@ -25,6 +25,8 @@ public:
     Filter(vector<Expression> *conditions, vector<LogicOperator> *connectors);
     bool append(Expression condition, LogicOperator connector);
     string toString();
+    int size();
+    vector<Expression> *getConditions();
 
 private:
     vector<Expression> *conditions;

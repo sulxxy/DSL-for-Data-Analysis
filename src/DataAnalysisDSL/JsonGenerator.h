@@ -36,10 +36,17 @@ public:
     const char* AGGREGATION_SPECIFICATION;
     const char* GROUPING_COLUMNS;
     const char* AGGREGATION_FUNCTION;
+    const char* AND_PREDICATE;
+    const char* COLUMN_CONSTANT_PREDICATE;
+    const char* COLUMN_COLUMN_PREDICATE;
+    const char* TABLE_SCAN;
+
     JsonGenerator();
     bool templateParsing(const char* );
     bool exportFilterAsPredicate(Writer<StringBuffer> *writer, Filter *filter);
     bool exportComprehensionsAsJson(Comprehensions *comprehensions1);
+    bool exportExprAsPredicate(Writer<StringBuffer> *writer, Expression *expression);
+    bool exportDataBagAsAggregation(Writer<StringBuffer> *writer, DataBag *dataBag);
 
 private:
     Document d;

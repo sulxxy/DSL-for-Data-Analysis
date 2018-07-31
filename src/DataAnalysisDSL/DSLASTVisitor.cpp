@@ -12,6 +12,7 @@ DSLASTVisitor::DSLASTVisitor(ASTContext *Context) : Context(Context) {
     elementListDict = new vector<ForListStmt *>;
     varList = new vector<Variable>;
     filter = new Filter;
+    databag = new DataBag(EMPTY, "DEFAULT");
 }
 
 DSLASTVisitor::DSLASTVisitor(ASTContext *Context, DataSource *dataSource) : Context(Context) {
@@ -26,7 +27,6 @@ void DSLASTVisitor::setDataSource(DataSource *dataSource) {
 }
 
 bool DSLASTVisitor::VisitForStmt(ForStmt *stmt) {
-//    llvm::outs() << "got for" << "\n";
     if (stmt == NULL) {
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
         exit(0);
@@ -120,6 +120,11 @@ bool DSLASTVisitor::VisitCallExpr(CallExpr* callExpr){
         this->databag = new DataBag(UNKNOWNARG, arg0);
     }
 
+    return true;
+}
+bool DSLASTVisitor::VisitVarDecl(VarDecl* varDecl){
+    llvm::outs() << "got var decl.\n";
+    varDecl->dump();
     return true;
 }
 

@@ -19,6 +19,7 @@ public:
     void feed(DataBag& databag);
     string toString();
     bool setDataBag(DataBag *dataBag);
+    Filter* getFilter();
 
 private:
     vector<ForListStmt*> *vars;

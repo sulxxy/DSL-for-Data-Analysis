@@ -41,3 +41,11 @@ string Filter::toString() {
     //todo:
     return this->conditions->at(0).toString();
 }
+
+int Filter::size(){
+    return this->conditions->size();
+}
+
+vector<Expression> *Filter::getConditions(){
+    return this->conditions;
+}

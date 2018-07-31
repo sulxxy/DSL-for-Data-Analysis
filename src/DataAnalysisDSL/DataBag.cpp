@@ -96,3 +96,7 @@ string DataBag::toString(){
             return "\norderBy " + arg + "\n";
     }
 }
+string DataBag::getAggreationFunction(){
+    return aggregationFunction;
+
+}

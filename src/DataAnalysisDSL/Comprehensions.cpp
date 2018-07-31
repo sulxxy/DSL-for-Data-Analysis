@@ -59,3 +59,6 @@ string Comprehensions::toString() {
     return ret;
 
 }
+Filter* Comprehensions::getFilter(){
+    return filter;
+}

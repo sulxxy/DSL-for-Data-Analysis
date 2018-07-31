@@ -29,6 +29,7 @@ private:
     int data;
     DataBagOperator dataBagOperator;
     string arg;
+    string aggregationFunction;
 
 public:
     DataBag();
@@ -46,6 +47,7 @@ public:
     bool executeDataBagAPI(DataBagOperator);
 
     bool setDataBagOperator(DataBagOperator);
+    string getAggreationFunction();
 
     string toString();
 };

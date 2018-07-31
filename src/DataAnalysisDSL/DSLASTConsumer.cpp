@@ -4,6 +4,7 @@
 
 #include "DSLASTConsumer.h"
 #include "DataSource.h"
+#include "JsonGenerator.h"
 
 DSLASTConsumer::DSLASTConsumer(ASTContext *Context) : Visitor(Context){
 
@@ -20,4 +21,6 @@ void DSLASTConsumer::HandleTranslationUnit(clang::ASTContext &Context) {
 //    llvm::outs() << "building comprehensions" << "\n";
     comprehensions = new Comprehensions(Visitor.getElementListDict(), Visitor.getFilter(), Visitor.getDataBag());
     llvm::outs() << "\n" + comprehensions->toString() << "\n";
+    JsonGenerator* jsonGenerator = new JsonGenerator;
+    jsonGenerator->exportComprehensionsAsJson(comprehensions);
 }

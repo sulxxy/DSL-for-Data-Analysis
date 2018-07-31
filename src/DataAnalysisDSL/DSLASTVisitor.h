@@ -26,6 +26,7 @@ public:
     bool VisitForStmt(ForStmt *stmt);
     bool VisitIfStmt(IfStmt *stmt);
     bool VisitCallExpr(CallExpr* callExpr);
+    bool VisitVarDecl(VarDecl* varDecl);
 
     void setDataSource(DataSource *dataSource);
 
