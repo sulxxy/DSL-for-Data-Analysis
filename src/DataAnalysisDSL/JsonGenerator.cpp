@@ -133,7 +133,7 @@ bool JsonGenerator::exportDataBagAsAggregation(Writer<StringBuffer> *writer, Dat
         {
             writer->StartObject();
             writer->Key(COLUMN_NAME);
-            writer->String(COLUMN_NAME); //todo: give a column name
+            writer->String(dataBag->getColumnArg().c_str());
             writer->Key(TABLE_NAME);
             writer->String(TABLE_NAME);
             writer->Key(VERSION);
@@ -145,29 +145,30 @@ bool JsonGenerator::exportDataBagAsAggregation(Writer<StringBuffer> *writer, Dat
         writer->EndObject();
     }
     writer->EndArray();
-    writer->Key(AGGREGATION_SPECIFICATION);
-    writer->StartArray();
-    for(int i = 0; i < 1; i++){
-        writer->StartObject();
-        writer->Key(AGGREGATION_FUNCTION);
-        writer->String(dataBag->getAggreationFunction().c_str());
-        writer->Key(ATTRIBUTE_REFERENCE);
-        {
+    if(dataBag->getAggreationFunction() != "EMPTY") {
+        writer->Key(AGGREGATION_SPECIFICATION);
+        writer->StartArray();
+        for (int i = 0; i < 1; i++) {
             writer->StartObject();
-            writer->Key(COLUMN_NAME);
-            writer->String(COLUMN_NAME); //todo: give a column name
-            writer->Key(TABLE_NAME);
-            writer->String(TABLE_NAME);
-            writer->Key(VERSION);
-            writer->Int(1);
-            writer->Key(RESULT_NAME);
-            writer->String(RESULT_NAME); // todo: give a result name
+            writer->Key(AGGREGATION_FUNCTION);
+            writer->String(dataBag->getAggreationFunction().c_str());
+            writer->Key(ATTRIBUTE_REFERENCE);
+            {
+                writer->StartObject();
+                writer->Key(COLUMN_NAME);
+                writer->String(COLUMN_NAME); //todo: give a column name
+                writer->Key(TABLE_NAME);
+                writer->String(TABLE_NAME);
+                writer->Key(VERSION);
+                writer->Int(1);
+                writer->Key(RESULT_NAME);
+                writer->String(RESULT_NAME); // todo: give a result name
+                writer->EndObject();
+            }
             writer->EndObject();
         }
-        writer->EndObject();
+        writer->EndArray();
     }
-
-    writer->EndArray();
 
     return true;
 }
@@ -186,6 +187,9 @@ bool JsonGenerator::exportComprehensionsAsJson(Comprehensions *comprehensions1){
             JsonWriter->Key(OPERATOR_NAME);
             JsonWriter->String(OPERATOR_NAME);//todo: give an operator_name
             exportFilterAsPredicate(JsonWriter, comprehensions1->getFilter());
+            if(comprehensions1->getDataBag()->getDataBagOperator() != EMPTY){
+                exportDataBagAsAggregation(JsonWriter, comprehensions1->getDataBag());
+            }
             JsonWriter->Key(LEFT_CHILD);
             {
                 JsonWriter->StartObject();

@@ -62,3 +62,6 @@ string Comprehensions::toString() {
 Filter* Comprehensions::getFilter(){
     return filter;
 }
+DataBag* Comprehensions::getDataBag(){
+    return this->bag;
+}

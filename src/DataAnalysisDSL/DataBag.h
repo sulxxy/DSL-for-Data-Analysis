@@ -28,12 +28,14 @@ class DataBag {
 private:
     int data;
     DataBagOperator dataBagOperator;
-    string arg;
+    string columnArg;
     string aggregationFunction;
 
 public:
     DataBag();
     DataBag(DataBagOperator dataBagOperator1, string arg0);
+    DataBagOperator getDataBagOperator();
+    string getColumnArg();
 
     bool map();
     bool flattenMap();

@@ -10,7 +10,8 @@ DataBag::DataBag() {
 
 DataBag::DataBag(DataBagOperator dataBagOperator1, string arg0){
     dataBagOperator = dataBagOperator1;
-    arg = arg0;
+    columnArg = arg0;
+    aggregationFunction = "EMPTY";
 }
 
 bool DataBag::map() {
@@ -91,12 +92,19 @@ string DataBag::toString(){
     /* TODO */
     switch(dataBagOperator){
         case GROUPBY:
-            return "\ngroupBy " + arg + "\n";
+            return "\ngroupBy " + columnArg + "\n";
         case SORTBY:
-            return "\norderBy " + arg + "\n";
+            return "\norderBy " + columnArg + "\n";
     }
 }
 string DataBag::getAggreationFunction(){
     return aggregationFunction;
+}
 
+DataBagOperator DataBag::getDataBagOperator(){
+    return dataBagOperator;
+}
+
+string DataBag::getColumnArg(){
+    return columnArg;
 }

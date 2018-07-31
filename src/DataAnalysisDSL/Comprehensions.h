@@ -19,6 +19,7 @@ public:
     void feed(DataBag& databag);
     string toString();
     bool setDataBag(DataBag *dataBag);
+    DataBag* getDataBag();
     Filter* getFilter();
 
 private:
