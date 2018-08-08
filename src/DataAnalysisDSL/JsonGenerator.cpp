@@ -12,8 +12,9 @@ JsonGenerator::JsonGenerator(){
     RIGHT_CHILD = "RIGHT_CHILD";
     PREDICATE = "PREDICATE";
     PREDICATES = "PREDICATES";
-    PREDICATE_TYPE = "PREDICATE_TYPE ";
+    PREDICATE_TYPE = "PREDICATE_TYPE";
     ATTRIBUTE_REFERENCE = "ATTRIBUTE_REFERENCE";
+    ATTRIBUTES = "ATTRIBUTES";
     COLUMN_NAME = "COLUMN_NAME";
     TABLE_NAME = "TABLE_NAME";
     VERSION = "VERSION";
@@ -23,15 +24,17 @@ JsonGenerator::JsonGenerator(){
     CONSTANT_TYPE = "CONSTANT_TYPE";
     LEFT_HAND_SIDE_ATTRIBUTE_REFERENCE = "LEFT_HAND_SIDE_ATTRIBUTE_REFERENCE";
     RESULT_NAME = "RESULT_NAME";
+    RESULT_VAL = "DEFAULT_RESULT";
     RIGHT_HAND_SIDE_ATTRIBUTE_REFERENCE = "RIGHT_HAND_SIDE_ATTRIBUTE_REFERENCE";
-    AGGREGATION_SPECIFICATION = "AGGREGATION_SPECIFICATION ";
-    AGGREGATION_FUNCTION = "AGGREGATION_FUNCTION ";
+    AGGREGATION_SPECIFICATION = "AGGREGATION_SPECIFICATION";
+    AGGREGATION_FUNCTION = "AGGREGATION_FUNCTION";
     GROUPING_COLUMNS = "GROUPING_COLUMNS";
     AND_PREDICATE = "AND_PREDICATE";
     COLUMN_CONSTANT_PREDICATE = "COLUMN_CONSTANT_PREDICATE";
     COLUMN_COLUMN_PREDICATE = "COLUMN_COLUMN_PREDICATE";
     TABLE_SCAN = "TABLE_SCAN";
     JsonWriter = new Writer<StringBuffer>(sb);
+    comprehensions = NULL;
 }
 
 
@@ -61,13 +64,13 @@ bool JsonGenerator::exportExprAsPredicate(Writer<StringBuffer> *writer, Expressi
         {
             writer->StartObject();
             writer->Key(COLUMN_NAME);
-            writer->String(COLUMN_NAME); //todo: define column_name_val
+            writer->String(expr->getLeftVarNameAsString().c_str());
             writer->Key(TABLE_NAME);
-            writer->String(TABLE_NAME); //todo: define column_name_val
+            writer->String(comprehensions->getTableName().c_str()); //todo: define column_name_val
             writer->Key(VERSION);
             writer->Int(1);
             writer->Key(RESULT_NAME);
-            writer->String(RESULT_NAME); //todo: result name
+            writer->String(RESULT_VAL); //todo: result name
             writer->EndObject();
         }
         writer->Key(PREDICATE_COMPARATOR);
@@ -127,7 +130,7 @@ bool JsonGenerator::exportDataBagAsAggregation(Writer<StringBuffer> *writer, Dat
 
     writer->Key(GROUPING_COLUMNS);
     writer->StartArray();
-    for(int i = 0;i < 1; i++){  //todo:
+    for(int i = 0;i < 1; i++){  //todo: array size
         writer->StartObject();
         writer->Key(ATTRIBUTE_REFERENCE);
         {
@@ -135,11 +138,11 @@ bool JsonGenerator::exportDataBagAsAggregation(Writer<StringBuffer> *writer, Dat
             writer->Key(COLUMN_NAME);
             writer->String(dataBag->getColumnArg().c_str());
             writer->Key(TABLE_NAME);
-            writer->String(TABLE_NAME);
+            writer->String(comprehensions->getTableName().c_str());
             writer->Key(VERSION);
             writer->Int(1);
             writer->Key(RESULT_NAME);
-            writer->String(RESULT_NAME); // todo: give a result name
+            writer->String(RESULT_VAL); // todo: give a result name
             writer->EndObject();
         }
         writer->EndObject();
@@ -158,11 +161,11 @@ bool JsonGenerator::exportDataBagAsAggregation(Writer<StringBuffer> *writer, Dat
                 writer->Key(COLUMN_NAME);
                 writer->String(COLUMN_NAME); //todo: give a column name
                 writer->Key(TABLE_NAME);
-                writer->String(TABLE_NAME);
+                writer->String(comprehensions->getTableName().c_str());
                 writer->Key(VERSION);
                 writer->Int(1);
                 writer->Key(RESULT_NAME);
-                writer->String(RESULT_NAME); // todo: give a result name
+                writer->String(RESULT_VAL); // todo: give a result name
                 writer->EndObject();
             }
             writer->EndObject();
@@ -178,6 +181,7 @@ bool JsonGenerator::exportComprehensionsAsJson(Comprehensions *comprehensions1){
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
         exit(0);
     }
+    this->comprehensions = comprehensions1;
 
     {
         JsonWriter->StartObject();
@@ -186,25 +190,60 @@ bool JsonGenerator::exportComprehensionsAsJson(Comprehensions *comprehensions1){
             JsonWriter->StartObject();
             JsonWriter->Key(OPERATOR_NAME);
             JsonWriter->String(OPERATOR_NAME);//todo: give an operator_name
-            exportFilterAsPredicate(JsonWriter, comprehensions1->getFilter());
-            if(comprehensions1->getDataBag()->getDataBagOperator() != EMPTY){
-                exportDataBagAsAggregation(JsonWriter, comprehensions1->getDataBag());
+            //attribute
+            JsonWriter->Key(ATTRIBUTES);
+            {
+                JsonWriter->StartArray();
+                for (int i = 0; i < 1; i++) {
+                    JsonWriter->StartObject();
+                    JsonWriter->Key(ATTRIBUTE_REFERENCE);
+                    {
+                        JsonWriter->StartObject();
+                        JsonWriter->Key(COLUMN_NAME);
+                        JsonWriter->String(comprehensions->getDataBag()->getColumnArg().c_str());
+                        JsonWriter->Key(TABLE_NAME);
+                        JsonWriter->String(comprehensions1->getTableName().c_str());
+                        JsonWriter->Key(VERSION);
+                        JsonWriter->Int(1);
+                        JsonWriter->EndObject();
+                    }
+                    JsonWriter->EndObject();
+                }
+                JsonWriter->EndArray();
             }
+
+            /* left child */
             JsonWriter->Key(LEFT_CHILD);
             {
                 JsonWriter->StartObject();
                 JsonWriter->Key(OPERATOR_NAME);
-                JsonWriter->String(TABLE_SCAN);
-                JsonWriter->Key(TABLE_NAME);
-                JsonWriter->String(TABLE_NAME);   //todo: give a name
+                JsonWriter->String("FOO");
+                exportFilterAsPredicate(JsonWriter, comprehensions1->getFilter());
+
+                if (comprehensions1->getDataBag()->getDataBagOperator() != DB_EMPTY) {
+                    exportDataBagAsAggregation(JsonWriter, comprehensions1->getDataBag());
+                }
+
+                JsonWriter->Key(LEFT_CHILD);
+                {
+                    JsonWriter->StartObject();
+                    JsonWriter->Key(OPERATOR_NAME);
+                    JsonWriter->String(TABLE_SCAN);
+                    JsonWriter->Key(TABLE_NAME);
+                    JsonWriter->String(comprehensions->getTableName().c_str());
+                    JsonWriter->Key(VERSION);
+                    JsonWriter->Int(1);
+                    JsonWriter->EndObject();
+                }
+
+                JsonWriter->Key(RIGHT_CHILD);
+                JsonWriter->Null();
+
                 JsonWriter->EndObject();
             }
 
             JsonWriter->Key(RIGHT_CHILD);
-            {
-                JsonWriter->StartObject();
-                JsonWriter->EndObject();
-            }
+            JsonWriter->Null();
 
             JsonWriter->EndObject();
         }

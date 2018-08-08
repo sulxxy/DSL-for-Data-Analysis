@@ -11,17 +11,19 @@
 using namespace std;
 
 typedef enum{
-    CONSTRUCTOR,
-    MAP,
-    FLATTENMAP,
-    GROUPBY,
-    WITHFILTER,
-    MINUS,
-    PLUS,
-    FOLD,
-    EMPTY,
-    SORTBY,
-    UNKNOWNARG
+    DB_CONSTRUCTOR,
+    DB_MAP,
+    DB_FLATTENMAP,
+    DB_GROUPBY,
+    DB_WITHFILTER,
+    DB_MINUS,
+    DB_PLUS,
+    DB_FOLD,
+    DB_EMPTY,
+    DB_SORTBY,
+    DB_SUM,
+    DB_AVG,
+    DB_UNKNOWNARG
 } DataBagOperator;
 
 class DataBag {
@@ -36,6 +38,7 @@ public:
     DataBag(DataBagOperator dataBagOperator1, string arg0);
     DataBagOperator getDataBagOperator();
     string getColumnArg();
+    bool setColumnArg(string arg0);
 
     bool map();
     bool flattenMap();

@@ -5,19 +5,31 @@
 #include "DataBag.h"
 
 DataBag::DataBag() {
-    dataBagOperator = CONSTRUCTOR;
+    dataBagOperator = DB_CONSTRUCTOR;
 }
 
 DataBag::DataBag(DataBagOperator dataBagOperator1, string arg0){
     dataBagOperator = dataBagOperator1;
     columnArg = arg0;
-    aggregationFunction = "EMPTY";
+    switch (dataBagOperator){
+        case DB_EMPTY:
+            aggregationFunction = "EMPTY";
+        case DB_SUM:
+            aggregationFunction = "SUM";
+        case DB_AVG:
+            aggregationFunction = "AVG";
+        default:
+            aggregationFunction = "DB_UNK";
+    }
+}
+
+bool DataBag::setColumnArg(string arg0){
+    columnArg = arg0;
 }
 
 bool DataBag::map() {
 
-    return true;
-}
+    return true; }
 
 bool DataBag::flattenMap() {
 
@@ -55,23 +67,23 @@ bool DataBag::empty() {
 
 bool DataBag::executeDataBagAPI(DataBagOperator dataBagOperator) {
     switch(dataBagOperator){
-        case CONSTRUCTOR:
+        case DB_CONSTRUCTOR:
             return true;
-        case MAP:
+        case DB_MAP:
             return map();
-        case FLATTENMAP:
+        case DB_FLATTENMAP:
             return flattenMap();
-        case WITHFILTER:
+        case DB_WITHFILTER:
             return withFilter();
-        case GROUPBY:
+        case DB_GROUPBY:
             return groupBy();
-        case MINUS:
+        case DB_MINUS:
             return minus();
-        case PLUS:
-            return PLUS;
-        case FOLD:
+        case DB_PLUS:
+            return plus();
+        case DB_FOLD:
             return fold();
-        case EMPTY:
+        case DB_EMPTY:
             return empty();
         default:
             return true;
@@ -91,9 +103,9 @@ bool DataBag::collect(int x) {
 string DataBag::toString(){
     /* TODO */
     switch(dataBagOperator){
-        case GROUPBY:
+        case DB_GROUPBY:
             return "\ngroupBy " + columnArg + "\n";
-        case SORTBY:
+        case DB_SORTBY:
             return "\norderBy " + columnArg + "\n";
     }
 }

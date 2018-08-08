@@ -17,6 +17,7 @@ class Comprehensions {
 public:
     Comprehensions(vector<ForListStmt*> *listVars, Filter* filter1, DataBag *bag1);
     void feed(DataBag& databag);
+    string getTableName();
     string toString();
     bool setDataBag(DataBag *dataBag);
     DataBag* getDataBag();

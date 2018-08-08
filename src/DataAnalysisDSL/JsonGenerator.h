@@ -15,32 +15,6 @@ using namespace rapidjson;
 
 class JsonGenerator {
 public:
-    const char* QUERY_PLAN;
-    const char* OPERATOR_NAME;
-    const char* LEFT_CHILD;
-    const char* RIGHT_CHILD;
-    const char* PREDICATE;
-    const char* PREDICATES;
-    const char* PREDICATE_TYPE;
-    const char* ATTRIBUTE_REFERENCE;
-    const char* COLUMN_NAME;
-    const char* TABLE_NAME;
-    const char* VERSION;
-    const char* PREDICATE_COMPARATOR;
-    const char* CONSTANT;
-    const char* CONSTANT_VALUE;
-    const char* CONSTANT_TYPE;
-    const char* LEFT_HAND_SIDE_ATTRIBUTE_REFERENCE;
-    const char* RESULT_NAME;
-    const char* RIGHT_HAND_SIDE_ATTRIBUTE_REFERENCE;
-    const char* AGGREGATION_SPECIFICATION;
-    const char* GROUPING_COLUMNS;
-    const char* AGGREGATION_FUNCTION;
-    const char* AND_PREDICATE;
-    const char* COLUMN_CONSTANT_PREDICATE;
-    const char* COLUMN_COLUMN_PREDICATE;
-    const char* TABLE_SCAN;
-
     JsonGenerator();
     bool templateParsing(const char* );
     bool exportFilterAsPredicate(Writer<StringBuffer> *writer, Filter *filter);
@@ -53,6 +27,35 @@ private:
     StringBuffer sb;
     Writer<StringBuffer>* JsonWriter;
     Comprehensions *comprehensions;
+
+    const char* QUERY_PLAN;
+    const char* OPERATOR_NAME;
+    const char* LEFT_CHILD;
+    const char* RIGHT_CHILD;
+    const char* PREDICATE;
+    const char* PREDICATES;
+    const char* PREDICATE_TYPE;
+    const char* ATTRIBUTE_REFERENCE;
+    const char* ATTRIBUTES;
+    const char* COLUMN_NAME;
+    const char* TABLE_NAME;
+    const char* VERSION;
+    const char* PREDICATE_COMPARATOR;
+    const char* CONSTANT;
+    const char* CONSTANT_VALUE;
+    const char* CONSTANT_TYPE;
+    const char* LEFT_HAND_SIDE_ATTRIBUTE_REFERENCE;
+    const char* RESULT_NAME;
+    const char* RESULT_VAL;
+    const char* RIGHT_HAND_SIDE_ATTRIBUTE_REFERENCE;
+    const char* AGGREGATION_SPECIFICATION;
+    const char* GROUPING_COLUMNS;
+    const char* AGGREGATION_FUNCTION;
+    const char* AND_PREDICATE;
+    const char* COLUMN_CONSTANT_PREDICATE;
+    const char* COLUMN_COLUMN_PREDICATE;
+    const char* TABLE_SCAN;
+
 };
 
 #endif //LLVM_JSONGENERATOR_H

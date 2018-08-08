@@ -31,6 +31,10 @@ Comprehensions::Comprehensions(vector<ForListStmt *> *listVars, Filter *filter1,
     }
 }
 
+string Comprehensions::getTableName(){
+    return this->vars->at(0)->getListName(); //todo
+}
+
 bool Comprehensions::setDataBag(DataBag *dataBag) {
     if (dataBag == NULL) {
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);

@@ -12,7 +12,7 @@ DSLASTVisitor::DSLASTVisitor(ASTContext *Context) : Context(Context) {
     elementListDict = new vector<ForListStmt *>;
     varList = new vector<Variable>;
     filter = new Filter;
-    databag = new DataBag(EMPTY, "DEFAULT");
+    databag = new DataBag(DB_EMPTY, "DEFAULT");
 }
 
 DSLASTVisitor::DSLASTVisitor(ASTContext *Context, DataSource *dataSource) : Context(Context) {
@@ -62,15 +62,20 @@ bool DSLASTVisitor::VisitIfStmt(IfStmt *stmt) {
             BinaryOperator *cond = cast<BinaryOperator>(stmt->getCond());
             expression->setComparator(cond->getOpcode());
             Expr *lhs = cond->getLHS();
+            lhs->dump();
             if (isa<MemberExpr>(lhs)) {
                 MemberExpr *memberExpr = cast<MemberExpr>(lhs);
                 string className, memberName;
                 visitMemberExpr(memberExpr, &className, &memberName);
+                llvm::outs() << "got MEM: " << memberName << "\n";
+                databag->setColumnArg(memberName);
+                expression->setLeftVar(new Variable(INTEGER, memberName)); //todo: datatype
             } else if (isa<ImplicitCastExpr>(lhs)) {
                 ImplicitCastExpr *implicitCastExpr = cast<ImplicitCastExpr>(lhs);
                 string var;
                 visitImplicitCastExpr(implicitCastExpr, &var);
 //                llvm::outs() << var << "\n";
+                databag->setColumnArg(var);
                 expression->setLeftVar(new Variable(INTEGER, var));
             } else {
                 llvm::outs() << "Unexpected Expr: " << lhs->getStmtClassName() << "\n";
@@ -80,7 +85,7 @@ bool DSLASTVisitor::VisitIfStmt(IfStmt *stmt) {
                 IntegerLiteral *integerLiteral = cast<IntegerLiteral>(rhs);
                 string r_val = to_string((int)integerLiteral->getValue().roundToDouble());
 //                llvm::outs() << r_val << "\n";
-                expression->setRightVar(new Variable(CONSTANT, r_val));
+                expression->setRightVar(new Variable(INTEGER, r_val));
             }
 //            rhs->dump();
         } else {
@@ -111,17 +116,23 @@ bool DSLASTVisitor::VisitCallExpr(CallExpr* callExpr){
 //    string arg0 = "AGE";
 
     if(funcName == "groupBy"){
-        this->databag = new DataBag(GROUPBY, arg0);
+        this->databag = new DataBag(DB_GROUPBY, arg0);
     }
     else if(funcName == "sortBy"){
-        this->databag = new DataBag(SORTBY, arg0);
+        this->databag = new DataBag(DB_SORTBY, arg0);
+    }
+    else if(funcName == "sum"){
+        this->databag = new DataBag(DB_SUM, arg0);
+    }
+    else if(funcName == "average"){
+        this->databag = new DataBag(DB_AVG, arg0);
     }
     else{
-        this->databag = new DataBag(UNKNOWNARG, arg0);
+        this->databag = new DataBag(DB_UNKNOWNARG, arg0);
     }
-
     return true;
 }
+
 bool DSLASTVisitor::VisitVarDecl(VarDecl* varDecl){
     llvm::outs() << "got var decl.\n";
     varDecl->dump();
@@ -136,6 +147,12 @@ bool DSLASTVisitor::visitImplicitCastExpr(ImplicitCastExpr *expr, string *var) {
     if (isa<DeclRefExpr>(*(expr->child_begin()))) {
         DeclRefExpr *declRefExpr = cast<DeclRefExpr>(*(expr->child_begin()));
         *var = declRefExpr->getNameInfo().getAsString();
+    }
+    if (isa<MemberExpr>(*(expr->child_begin()))){
+        MemberExpr *memberExpr = cast<MemberExpr>(*(expr->child_begin()));
+        string className, memberName;
+        visitMemberExpr(memberExpr, &className, &memberName);
+        *var = memberName;
     }
     return true;
 }
