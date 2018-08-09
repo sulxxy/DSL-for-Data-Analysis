@@ -55,6 +55,9 @@ private:
     const char* COLUMN_CONSTANT_PREDICATE;
     const char* COLUMN_COLUMN_PREDICATE;
     const char* TABLE_SCAN;
+    const char* GENERIC_SELECTION;
+    const char* PROJECTION;
+    const char* GENERIC_GROUPBY;
 
 };
 

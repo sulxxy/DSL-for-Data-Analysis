@@ -112,7 +112,7 @@ bool DSLASTVisitor::VisitCallExpr(CallExpr* callExpr){
 //    callExpr->getArg(0)->dump();
 //    ImplicitCastExpr *tmp = cast<ImplicitCastExpr>(*(callExpr->getArg(0)->child_begin()));
 //    StringRef arg0 = cast<StringLiteral>(*(tmp->child_begin()))->getString();
-    StringRef arg0 = "AGE";
+    StringRef arg0 = "DEFAULT";
 //    tmp->dump();
 //    string arg0 = "AGE";
 
@@ -123,7 +123,14 @@ bool DSLASTVisitor::VisitCallExpr(CallExpr* callExpr){
         this->databag = new DataBag(DB_COLLECT, args);
     }
     else if(funcName == "groupBy"){
-        this->databag = new DataBag(DB_GROUPBY, arg0);
+        if(this->databag != NULL){
+            vector<string> args;
+            visitGroupByFunc(callExpr, &args);
+            this->databag->setGroupBy(DB_GROUPBY, args);
+        }
+        else {
+            this->databag = new DataBag(DB_GROUPBY, arg0);
+        }
     }
     else if(funcName == "sortBy"){
         this->databag = new DataBag(DB_SORTBY, arg0);
@@ -193,8 +200,19 @@ bool DSLASTVisitor::visitCollectFunc(CallExpr* callExpr, vector<string> *args){
     }
     return true;
 }
+bool DSLASTVisitor::visitGroupByFunc(CallExpr* callExpr, vector<string> *args){
+    if (callExpr == NULL) {
+        ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
+        exit(0);
+    }
 
-bool DSLASTVisitor::visitGroupByFunc(CallExpr* callExpr){
+    llvm::outs() << "got groupby" << "\n";
+//    callExpr->dump();
+    for(uint64_t i = 0; i < 3; i++){
+        ImplicitCastExpr *tmp = cast<ImplicitCastExpr>(*(callExpr->getArg(i)->child_begin()));
+        StringRef arg0 = cast<StringLiteral>(*(tmp->child_begin()))->getString();
+        args->push_back(arg0);
+    }
     return true;
 }
 

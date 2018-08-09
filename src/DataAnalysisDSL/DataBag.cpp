@@ -2,6 +2,7 @@
 // Created by zhiwei on 6/18/18.
 //
 
+#include <llvm/Support/raw_ostream.h>
 #include "DataBag.h"
 
 DataBag::DataBag() {
@@ -132,4 +133,14 @@ string DataBag::getColumnArg(){
 }
 vector<string> DataBag::getSelectedColumns(){
     return selectedColumnArgs;
+}
+string DataBag::getAggreationArg(){
+    return aggregationArg;
+}
+bool DataBag::setGroupBy(DataBagOperator dataBagOperator1, vector<string> args){
+    this->dataBagOperator = dataBagOperator1;
+    columnArg = args.at(0);
+    aggregationFunction = args.at(1);
+    aggregationArg = args.at(2);
+    return true;
 }

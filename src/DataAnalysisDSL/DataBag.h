@@ -33,6 +33,7 @@ private:
     int data;
     DataBagOperator dataBagOperator;
     string columnArg;
+    string aggregationArg;
     vector<string> selectedColumnArgs;
     string aggregationFunction;
 
@@ -44,6 +45,7 @@ public:
     string getColumnArg();
     vector<string> getSelectedColumns();
     bool setColumnArg(string arg0);
+    bool setGroupBy(DataBagOperator dataBagOperator1, vector<string> args);
 
     bool map();
     bool flattenMap();
@@ -58,6 +60,7 @@ public:
 
     bool setDataBagOperator(DataBagOperator);
     string getAggreationFunction();
+    string getAggreationArg();
 
     string toString();
 };

@@ -20,7 +20,7 @@ void DSLASTConsumer::HandleTranslationUnit(clang::ASTContext &Context) {
     Visitor.TraverseDecl(Context.getTranslationUnitDecl());
 //    llvm::outs() << "building comprehensions" << "\n";
     comprehensions = new Comprehensions(Visitor.getElementListDict(), Visitor.getFilter(), Visitor.getDataBag());
-    llvm::outs() << "\n" + comprehensions->toString() << "\n";
+//    llvm::outs() << "\n" + comprehensions->toString() << "\n";
     JsonGenerator* jsonGenerator = new JsonGenerator;
     jsonGenerator->exportComprehensionsAsJson(comprehensions);
 }

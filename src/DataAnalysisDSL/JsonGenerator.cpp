@@ -33,6 +33,9 @@ JsonGenerator::JsonGenerator(){
     COLUMN_CONSTANT_PREDICATE = "COLUMN_CONSTANT_PREDICATE";
     COLUMN_COLUMN_PREDICATE = "COLUMN_COLUMN_PREDICATE";
     TABLE_SCAN = "TABLE_SCAN";
+    GENERIC_SELECTION = "GENERIC_SELECTION";
+    PROJECTION = "PROJECTION";
+    GENERIC_GROUPBY = "GENERIC_GROUPBY";
     JsonWriter = new Writer<StringBuffer>(sb);
     comprehensions = NULL;
 }
@@ -142,12 +145,13 @@ bool JsonGenerator::exportDataBagAsAggregation(Writer<StringBuffer> *writer, Dat
             writer->Key(VERSION);
             writer->Int(1);
             writer->Key(RESULT_NAME);
-            writer->String(RESULT_VAL); // todo: give a result name
+            writer->String(dataBag->getColumnArg().c_str()); // todo: give a result name
             writer->EndObject();
         }
         writer->EndObject();
     }
     writer->EndArray();
+    llvm::outs() << "set done\n";
     if(dataBag->getAggreationFunction() != "EMPTY") {
         writer->Key(AGGREGATION_SPECIFICATION);
         writer->StartArray();
@@ -159,15 +163,15 @@ bool JsonGenerator::exportDataBagAsAggregation(Writer<StringBuffer> *writer, Dat
             {
                 writer->StartObject();
                 writer->Key(COLUMN_NAME);
-                writer->String(COLUMN_NAME); //todo: give a column name
+                writer->String(dataBag->getAggreationArg().c_str()); //todo: give a column name
                 writer->Key(TABLE_NAME);
                 writer->String(comprehensions->getTableName().c_str());
                 writer->Key(VERSION);
                 writer->Int(1);
-                writer->Key(RESULT_NAME);
-                writer->String(RESULT_VAL); // todo: give a result name
                 writer->EndObject();
             }
+            writer->Key(RESULT_NAME);
+            writer->String(dataBag->getAggreationArg().c_str()); // todo: give a result name
             writer->EndObject();
         }
         writer->EndArray();
@@ -182,6 +186,7 @@ bool JsonGenerator::exportComprehensionsAsJson(Comprehensions *comprehensions1){
         exit(0);
     }
     this->comprehensions = comprehensions1;
+    llvm::outs() << "TYPE: " << comprehensions1->getDataBag()->getDataBagOperator() << "\n";
 
     {
         JsonWriter->StartObject();
@@ -189,41 +194,10 @@ bool JsonGenerator::exportComprehensionsAsJson(Comprehensions *comprehensions1){
         {
             JsonWriter->StartObject();
             JsonWriter->Key(OPERATOR_NAME);
-            JsonWriter->String(OPERATOR_NAME);//todo: give an operator_name
-            //attribute
-            JsonWriter->Key(ATTRIBUTES);
-            {
-                vector<string> selectedColumns = comprehensions->getDataBag()->getSelectedColumns();
-                JsonWriter->StartArray();
-                for (int i = 0; i < selectedColumns.size(); i++) {
-                    JsonWriter->StartObject();
-                    JsonWriter->Key(ATTRIBUTE_REFERENCE);
-                    {
-                        JsonWriter->StartObject();
-                        JsonWriter->Key(COLUMN_NAME);
-                        JsonWriter->String(selectedColumns.at(i).c_str());
-                        JsonWriter->Key(TABLE_NAME);
-                        JsonWriter->String(comprehensions1->getTableName().c_str());
-                        JsonWriter->Key(VERSION);
-                        JsonWriter->Int(1);
-                        JsonWriter->EndObject();
-                    }
-                    JsonWriter->EndObject();
-                }
-                JsonWriter->EndArray();
-            }
-
-            /* left child */
-            JsonWriter->Key(LEFT_CHILD);
-            {
-                JsonWriter->StartObject();
-                JsonWriter->Key(OPERATOR_NAME);
-                JsonWriter->String("FOO");
-                exportFilterAsPredicate(JsonWriter, comprehensions1->getFilter());
-
-                if (comprehensions1->getDataBag()->getDataBagOperator() != (DB_EMPTY&DB_COLLECT)) {
-                    exportDataBagAsAggregation(JsonWriter, comprehensions1->getDataBag());
-                }
+            if (comprehensions1->getDataBag()->getDataBagOperator() == DB_GROUPBY) {
+                llvm::outs() << "GROUPBY\n";
+                JsonWriter->String(GENERIC_GROUPBY);
+                exportDataBagAsAggregation(JsonWriter, comprehensions1->getDataBag());
 
                 JsonWriter->Key(LEFT_CHILD);
                 {
@@ -237,11 +211,71 @@ bool JsonGenerator::exportComprehensionsAsJson(Comprehensions *comprehensions1){
                     JsonWriter->EndObject();
                 }
 
-                JsonWriter->Key(RIGHT_CHILD);
-                JsonWriter->Null();
-
-                JsonWriter->EndObject();
             }
+            else if (comprehensions1->getDataBag()->getDataBagOperator() == DB_COLLECT) {
+                JsonWriter->String(PROJECTION);
+                //attribute
+                JsonWriter->Key(ATTRIBUTES);
+                {
+                    vector<string> selectedColumns = comprehensions->getDataBag()->getSelectedColumns();
+                    JsonWriter->StartArray();
+                    for (int i = 0; i < selectedColumns.size(); i++) {
+                        JsonWriter->StartObject();
+                        JsonWriter->Key(ATTRIBUTE_REFERENCE);
+                        {
+                            JsonWriter->StartObject();
+                            JsonWriter->Key(COLUMN_NAME);
+                            JsonWriter->String(selectedColumns.at(i).c_str());
+                            JsonWriter->Key(TABLE_NAME);
+                            JsonWriter->String(comprehensions1->getTableName().c_str());
+                            JsonWriter->Key(VERSION);
+                            JsonWriter->Int(1);
+                            JsonWriter->EndObject();
+                        }
+                        JsonWriter->EndObject();
+                    }
+                    JsonWriter->EndArray();
+                }
+
+                /* left child */
+                JsonWriter->Key(LEFT_CHILD);
+                {
+                    JsonWriter->StartObject();
+                    JsonWriter->Key(OPERATOR_NAME);
+                    if (comprehensions1->getDataBag()->getDataBagOperator() == DB_COLLECT) {
+                        JsonWriter->String(GENERIC_SELECTION);
+                    }
+                    else{
+                        JsonWriter->String(OPERATOR_NAME);
+                    }
+                    exportFilterAsPredicate(JsonWriter, comprehensions1->getFilter());
+
+//                    if (comprehensions1->getDataBag()->getDataBagOperator() != (DB_EMPTY&DB_COLLECT)) {
+//                        exportDataBagAsAggregation(JsonWriter, comprehensions1->getDataBag());
+//                    }
+
+                    JsonWriter->Key(LEFT_CHILD);
+                    {
+                        JsonWriter->StartObject();
+                        JsonWriter->Key(OPERATOR_NAME);
+                        JsonWriter->String(TABLE_SCAN);
+                        JsonWriter->Key(TABLE_NAME);
+                        JsonWriter->String(comprehensions->getTableName().c_str());
+                        JsonWriter->Key(VERSION);
+                        JsonWriter->Int(1);
+                        JsonWriter->EndObject();
+                    }
+
+                    JsonWriter->Key(RIGHT_CHILD);
+                    JsonWriter->Null();
+
+                    JsonWriter->EndObject();
+                }
+            }
+            else{
+                JsonWriter->String(OPERATOR_NAME);
+            }
+
 
             JsonWriter->Key(RIGHT_CHILD);
             JsonWriter->Null();

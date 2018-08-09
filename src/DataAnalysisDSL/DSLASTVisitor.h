@@ -51,7 +51,7 @@ private:
     bool visitImplicitCastExpr(ImplicitCastExpr *expr, string *var);
     bool visitMemberExpr(MemberExpr *expr, string *className, string *memberName);
     bool visitCollectFunc(CallExpr* callExpr, vector<string> *args);
-    bool visitGroupByFunc(CallExpr* callExpr);
+    bool visitGroupByFunc(CallExpr* callExpr, vector<string> *args);
 };
 
 #endif //LLVM_DSLASTVISITOR_H
