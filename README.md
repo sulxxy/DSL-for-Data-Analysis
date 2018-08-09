@@ -27,7 +27,7 @@ In this project, this problem is tackled by applying the ideas of Emma [1] that 
 
 # Presentations
 * [Midterm Presentation](https://docs.google.com/presentation/d/1qKCc-usSp4yyKjJsFRIqfw5l5ffWULwigyTIkNzoBO8/edit?usp=sharing)
-* Final Presentation: TBA
+* [Final Presentation](https://docs.google.com/presentation/d/1Srj1zN6jqBpNtd-ldUAT3MBW31Vv5foNe4vy5PaZscY/edit?usp=sharing)
 
 # Supplementary Materials 
 * [Understanding Clang AST](https://jonasdevlieghere.com/understanding-the-clang-ast/)
