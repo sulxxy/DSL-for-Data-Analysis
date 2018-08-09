@@ -193,14 +193,15 @@ bool JsonGenerator::exportComprehensionsAsJson(Comprehensions *comprehensions1){
             //attribute
             JsonWriter->Key(ATTRIBUTES);
             {
+                vector<string> selectedColumns = comprehensions->getDataBag()->getSelectedColumns();
                 JsonWriter->StartArray();
-                for (int i = 0; i < 1; i++) {
+                for (int i = 0; i < selectedColumns.size(); i++) {
                     JsonWriter->StartObject();
                     JsonWriter->Key(ATTRIBUTE_REFERENCE);
                     {
                         JsonWriter->StartObject();
                         JsonWriter->Key(COLUMN_NAME);
-                        JsonWriter->String(comprehensions->getDataBag()->getColumnArg().c_str());
+                        JsonWriter->String(selectedColumns.at(i).c_str());
                         JsonWriter->Key(TABLE_NAME);
                         JsonWriter->String(comprehensions1->getTableName().c_str());
                         JsonWriter->Key(VERSION);
@@ -220,7 +221,7 @@ bool JsonGenerator::exportComprehensionsAsJson(Comprehensions *comprehensions1){
                 JsonWriter->String("FOO");
                 exportFilterAsPredicate(JsonWriter, comprehensions1->getFilter());
 
-                if (comprehensions1->getDataBag()->getDataBagOperator() != DB_EMPTY) {
+                if (comprehensions1->getDataBag()->getDataBagOperator() != (DB_EMPTY&DB_COLLECT)) {
                     exportDataBagAsAggregation(JsonWriter, comprehensions1->getDataBag());
                 }
 

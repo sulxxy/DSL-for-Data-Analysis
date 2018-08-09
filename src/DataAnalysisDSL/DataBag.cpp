@@ -22,6 +22,16 @@ DataBag::DataBag(DataBagOperator dataBagOperator1, string arg0){
             aggregationFunction = "DB_UNK";
     }
 }
+DataBag::DataBag(DataBagOperator dataBagOperator1, vector<string> args){
+    dataBagOperator = dataBagOperator1;
+    switch(dataBagOperator){
+        case DB_COLLECT:
+             selectedColumnArgs = args;
+             break;
+        default:
+            aggregationFunction = "DB_UNK";
+    }
+}
 
 bool DataBag::setColumnArg(string arg0){
     columnArg = arg0;
@@ -119,4 +129,7 @@ DataBagOperator DataBag::getDataBagOperator(){
 
 string DataBag::getColumnArg(){
     return columnArg;
+}
+vector<string> DataBag::getSelectedColumns(){
+    return selectedColumnArgs;
 }

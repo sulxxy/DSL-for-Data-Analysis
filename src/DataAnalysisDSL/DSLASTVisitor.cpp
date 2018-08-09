@@ -62,12 +62,12 @@ bool DSLASTVisitor::VisitIfStmt(IfStmt *stmt) {
             BinaryOperator *cond = cast<BinaryOperator>(stmt->getCond());
             expression->setComparator(cond->getOpcode());
             Expr *lhs = cond->getLHS();
-            lhs->dump();
+//            lhs->dump();
             if (isa<MemberExpr>(lhs)) {
                 MemberExpr *memberExpr = cast<MemberExpr>(lhs);
                 string className, memberName;
                 visitMemberExpr(memberExpr, &className, &memberName);
-                llvm::outs() << "got MEM: " << memberName << "\n";
+//                llvm::outs() << "got MEM: " << memberName << "\n";
                 databag->setColumnArg(memberName);
                 expression->setLeftVar(new Variable(INTEGER, memberName)); //todo: datatype
             } else if (isa<ImplicitCastExpr>(lhs)) {
@@ -107,15 +107,22 @@ bool DSLASTVisitor::VisitCallExpr(CallExpr* callExpr){
 //    callExpr->dump();
 
     string funcName = callExpr->getDirectCallee()->getNameInfo().getAsString();
-//    llvm::outs() << "funcName: " << funcName << "\n";
+    llvm::outs() << "funcName: " << funcName << "\n";
 
 //    callExpr->getArg(0)->dump();
-    ImplicitCastExpr *tmp = cast<ImplicitCastExpr>(*(callExpr->getArg(0)->child_begin()));
-    StringRef arg0 = cast<StringLiteral>(*(tmp->child_begin()))->getString();
+//    ImplicitCastExpr *tmp = cast<ImplicitCastExpr>(*(callExpr->getArg(0)->child_begin()));
+//    StringRef arg0 = cast<StringLiteral>(*(tmp->child_begin()))->getString();
+    StringRef arg0 = "AGE";
 //    tmp->dump();
 //    string arg0 = "AGE";
 
-    if(funcName == "groupBy"){
+
+    if(funcName == "collect"){
+        vector<string> args;
+        visitCollectFunc(callExpr, &args);
+        this->databag = new DataBag(DB_COLLECT, args);
+    }
+    else if(funcName == "groupBy"){
         this->databag = new DataBag(DB_GROUPBY, arg0);
     }
     else if(funcName == "sortBy"){
@@ -135,7 +142,7 @@ bool DSLASTVisitor::VisitCallExpr(CallExpr* callExpr){
 
 bool DSLASTVisitor::VisitVarDecl(VarDecl* varDecl){
     llvm::outs() << "got var decl.\n";
-    varDecl->dump();
+//    varDecl->dump();
     return true;
 }
 
@@ -169,6 +176,25 @@ bool DSLASTVisitor::visitMemberExpr(MemberExpr *expr, string *className, string 
         llvm::outs() << "class name: " << declRefExpr->getNameInfo().getAsString() << "\n";
         *className = declRefExpr->getNameInfo().getAsString();
     }
+    return true;
+}
+bool DSLASTVisitor::visitCollectFunc(CallExpr* callExpr, vector<string> *args){
+    if (callExpr == NULL) {
+        ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
+        exit(0);
+    }
+    IntegerLiteral *n = cast<IntegerLiteral>(callExpr->getArg(0));
+
+    uint64_t  nParam =  *(n->getValue().getRawData());
+    for(uint64_t i = 1; i <= nParam; i++){
+        ImplicitCastExpr *tmp = cast<ImplicitCastExpr>(callExpr->getArg(i));
+        StringRef arg0 = cast<StringLiteral>(*(tmp->child_begin()))->getString();
+        args->push_back(arg0);
+    }
+    return true;
+}
+
+bool DSLASTVisitor::visitGroupByFunc(CallExpr* callExpr){
     return true;
 }
 

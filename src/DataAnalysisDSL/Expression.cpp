@@ -9,12 +9,12 @@ Expression::Expression() {
 
 }
 
-Expression::Expression(Variable *left, Variable *right, BO_Opcode comparator){
-    if(left == NULL){
+Expression::Expression(Variable *left, Variable *right, BO_Opcode comparator) {
+    if (left == NULL) {
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
         exit(0);
     }
-    if(right == NULL){
+    if (right == NULL) {
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
         exit(0);
     }
@@ -24,19 +24,21 @@ Expression::Expression(Variable *left, Variable *right, BO_Opcode comparator){
     this->comparator = comparator;
 }
 
-Variable* Expression::getLeftVar(){
+Variable *Expression::getLeftVar() {
     return this->leftVar;
 }
-Variable* Expression::getRightVar(){
+
+Variable *Expression::getRightVar() {
     return this->rightVar;
 
 }
-BO_Opcode Expression::getComparator(){
+
+BO_Opcode Expression::getComparator() {
     return this->comparator;
 }
 
-bool Expression::setLeftVar(Variable *var){
-    if(var == NULL){
+bool Expression::setLeftVar(Variable *var) {
+    if (var == NULL) {
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
         exit(0);
     }
@@ -44,8 +46,8 @@ bool Expression::setLeftVar(Variable *var){
     return true;
 }
 
-bool Expression::setRightVar(Variable *var){
-    if(var == NULL){
+bool Expression::setRightVar(Variable *var) {
+    if (var == NULL) {
         ErrorMsg(__FILE__, __func__, __LINE__, NULLPOINTER);
         exit(0);
     }
@@ -53,14 +55,14 @@ bool Expression::setRightVar(Variable *var){
     return true;
 }
 
-bool Expression::setComparator(BO_Opcode comparator1){
+bool Expression::setComparator(BO_Opcode comparator1) {
     this->comparator = comparator1;
     return true;
 
 }
 
-string Expression::opcodeStr(){
-    switch(this->comparator){
+string Expression::opcodeStr() {
+    switch (this->comparator) {
         case BO_LE:
             return "<=";
         case BO_LT:
@@ -76,12 +78,12 @@ string Expression::opcodeStr(){
     }
 }
 
-string Expression::toString(){
+string Expression::toString() {
     return this->leftVar->getVarName() + " " + opcodeStr() + " " + this->rightVar->getVarName();
 }
 
-string Expression::getOpcodeAsString(){
-    switch(this->comparator){
+string Expression::getOpcodeAsString() {
+    switch (this->comparator) {
         case BO_LE:
             return "LESS_EQUAL";
         case BO_LT:
@@ -97,18 +99,18 @@ string Expression::getOpcodeAsString(){
     }
 }
 
-string Expression::getLeftVarNameAsString(){
+string Expression::getLeftVarNameAsString() {
     return getLeftVar()->getVarName();
 }
 
-string Expression::getLeftVarTypeAsString(){
+string Expression::getLeftVarTypeAsString() {
     return getLeftVar()->getVarTypeAsString();
 }
 
-string Expression::getRightVarNameAsString(){
+string Expression::getRightVarNameAsString() {
     return getRightVar()->getVarName();
 }
 
-string Expression::getRightVarTypeAsString(){
+string Expression::getRightVarTypeAsString() {
     return getRightVar()->getVarTypeAsString();
 }
